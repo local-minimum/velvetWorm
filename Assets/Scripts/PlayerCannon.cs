@@ -70,7 +70,7 @@ public class PlayerCannon : MonoBehaviour {
 	void Update () {
 		if (headRB.velocity.sqrMagnitude < stillSpeedSq) {
 			if (still) {
-				curQuat.w = Mathf.Clamp(curQuat.w + Input.GetAxis("Vertical") * rotationSpeed * _flipYVal, -1f - flexAngle, -1f + flexAngle);
+				curQuat.w = Mathf.Clamp(curQuat.w + Input.GetAxis("Vertical") * rotationSpeed * _flipYVal, -6.5f - flexAngle, -6.5f + flexAngle);
 				if (shooting) {
 					_rndWobblingY += shootingWobblingF * Time.deltaTime;
 					curQuat.w += shootingWobbling * (Mathf.PerlinNoise(_rndWobblingX, _rndWobblingY) - perlinMean);

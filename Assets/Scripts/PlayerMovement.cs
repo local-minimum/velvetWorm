@@ -56,7 +56,7 @@ public class PlayerMovement : MonoBehaviour {
 		//transform.Translate(0, 0, Input.GetAxis("Vertical") * speed * Time.deltaTime); 
 
 
-		float d = Input.GetAxisRaw ("Vertical");
+		float d = Input.GetAxisRaw ("Horizontal");
 		if (d < 0) {
 			rigidbody2D.velocity = -transform.right * Time.deltaTime * speed;
 		} else if (d > 0) {
