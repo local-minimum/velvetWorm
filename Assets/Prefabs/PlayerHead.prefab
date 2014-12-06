@@ -44,6 +44,7 @@ GameObject:
   - 212: {fileID: 21200002}
   - 58: {fileID: 5800000}
   - 50: {fileID: 5000002}
+  - 114: {fileID: 11400002}
   m_Layer: 8
   m_Name: PlayerHead
   m_TagString: Player
@@ -99,7 +100,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100004}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.14639997, y: -2.0402, z: 0}
+  m_LocalPosition: {x: 2.25, y: 1.12, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400002}
@@ -141,7 +142,7 @@ Rigidbody2D:
   m_GameObject: {fileID: 100004}
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: .0500000007
+  m_AngularDrag: 0
   m_GravityScale: 0
   m_FixedAngle: 1
   m_IsKinematic: 0
@@ -165,17 +166,45 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 533c597566ac07749b84305eb232775f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   flexAngle: .5
   shootingWobbling: 5
+  shootingWobblingF: 1
   rotationSpeed: .100000001
+  headMovement: {fileID: 0}
   _flipY: 0
   _flipYVal: -1
   cannonArm: {fileID: 0}
+  rotationArmActivated: 2.20000005
+  armActivationTime: .5
+  headRB: {fileID: 5000002}
+  stillSpeedSq: .0500000007
+  slimeEmitter: {fileID: 0}
+--- !u!114 &11400002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ce784edd7e96fd4e8e6fbae9d766f1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 512
+  hugSurface: 1
+  wantingToMove: 1
+  speed: 100
+  playerNormalGravity: 10
+  turnSpeed: 90
+  smoothTurn: 15
+  rayMaxDistance: 2
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1

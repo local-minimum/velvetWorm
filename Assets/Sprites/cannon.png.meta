@@ -1,11 +1,12 @@
 fileFormatVersion: 2
-guid: b96e734e37104474fbcba9c3dadc84aa
+guid: 74b31bb4828f6d74b981352194866e23
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: cannon
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
+    enableMipMap: 0
     linearTexture: 0
     correctGamma: 0
     fadeOut: 0
