@@ -44,11 +44,10 @@ public class PlayerCannon : MonoBehaviour {
 		}
 	}
 
-	public Transform cannonArm = null;
+	public PlayerSegment cannonArm = null;
 
 	public float rotationArmActivated = 2.2f;
-	public float rotationArmDeactivated = Mathf.PI;
-	private Quaternion localRotationArm = new Quaternion(0f, 0f, 1f, Mathf.PI);
+	private float rotationArmDeactivated = Mathf.PI;
 	public float armActivationTime = 0.5f;
 
 	public Rigidbody2D headRB = null;
@@ -101,12 +100,13 @@ public class PlayerCannon : MonoBehaviour {
 
 	IEnumerator<WaitForSeconds> Energize() {
 		stillTransition = true;
+		rotationArmDeactivated = cannonArm.angle;
+		float rotTarget = rotationArmDeactivated + rotationArmActivated;
 		float startT = Time.timeSinceLevelLoad;
 		float curT = startT;
 		while (curT - startT < armActivationTime) {
 			curT = Time.timeSinceLevelLoad;
-			localRotationArm.w = Mathf.Lerp(localRotationArm.w, rotationArmActivated, (curT - startT) / armActivationTime);
-			cannonArm.localRotation = localRotationArm;
+			cannonArm.angle = Mathf.Lerp(cannonArm.angle, rotTarget, (curT - startT) / armActivationTime);
 			yield return new WaitForSeconds(0.05f);
 		}
 		still = true;
@@ -116,14 +116,15 @@ public class PlayerCannon : MonoBehaviour {
 
 	IEnumerator<WaitForSeconds> Deenergize() {
 		stillTransition = true;
+		float rotTarget = rotationArmDeactivated;
 		float startT = Time.timeSinceLevelLoad;
 		float curT = startT;
 		while (curT - startT < armActivationTime) {
 			curT = Time.timeSinceLevelLoad;
-			localRotationArm.w = Mathf.Lerp(localRotationArm.w, rotationArmDeactivated, (curT - startT) / armActivationTime);
-			cannonArm.localRotation = localRotationArm;
+			cannonArm.angle = Mathf.Lerp(cannonArm.angle, rotTarget, (curT - startT) / armActivationTime);
 			yield return new WaitForSeconds(0.05f);
 		}
+
 		still = false;
 		stillTransition = false;
 		
