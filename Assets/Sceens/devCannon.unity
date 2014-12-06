@@ -439,7 +439,7 @@ ParticleSystem:
     enabled: 1
     type: 4
     radius: .0439486131
-    angle: 8.52607441
+    angle: .735424221
     length: 5
     boxX: 1
     boxY: 1
@@ -1279,6 +1279,10 @@ Prefab:
     - target: {fileID: 400002, guid: 2d8da2ae3e32f154bad8168c26fef0eb, type: 2}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800000, guid: 2d8da2ae3e32f154bad8168c26fef0eb, type: 2}
+      propertyPath: ShapeModule.angle
+      value: .735424221
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2d8da2ae3e32f154bad8168c26fef0eb, type: 2}

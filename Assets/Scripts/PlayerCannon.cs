@@ -89,7 +89,7 @@ public class PlayerCannon : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-		Debug.Log(string.Format("{0} {1} {2}", still, Input.GetButton("Fire1"), slimeEmitter.isPaused));
+//		Debug.Log(string.Format("{0} {1} {2}", still, Input.GetButton("Fire1"), slimeEmitter.isPaused));
 		if (still && Input.GetButton("Fire1") && !shooting) {
 		    slimeEmitter.Play();
 			shooting = true;
