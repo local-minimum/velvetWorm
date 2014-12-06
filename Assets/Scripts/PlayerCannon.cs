@@ -60,8 +60,14 @@ public class PlayerCannon : MonoBehaviour {
 	private bool stillTransition = false;
 
 	public ParticleSystem slimeEmitter;
-	private bool shooting = false;
+	private bool _shooting = false;
 	private float perlinMean = 0.4652489f;
+
+	public bool ready {
+		get {
+			return still;
+		}
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -73,7 +79,7 @@ public class PlayerCannon : MonoBehaviour {
 		if (headRB.velocity.sqrMagnitude < stillSpeedSq && !headMovement.wantingToMove) {
 			if (still) {
 				curQuat.w = Mathf.Clamp(curQuat.w + Input.GetAxis("Vertical") * rotationSpeed * _flipYVal, -6.5f - flexAngle, -6.5f + flexAngle);
-				if (shooting) {
+				if (_shooting) {
 					_rndWobblingY += shootingWobblingF * Time.deltaTime;
 					curQuat.w += shootingWobbling * (Mathf.PerlinNoise(_rndWobblingX, _rndWobblingY) - perlinMean);
 				}
@@ -91,12 +97,12 @@ public class PlayerCannon : MonoBehaviour {
 
 	void FixedUpdate() {
 //		Debug.Log(string.Format("{0} {1} {2}", still, Input.GetButton("Fire1"), slimeEmitter.isPaused));
-		if (still && Input.GetButton("Fire1") && !shooting) {
+		if (still && Input.GetButton("Fire1") && !_shooting) {
 		    slimeEmitter.Play();
-			shooting = true;
-		} else if ((!still || !Input.GetButton("Fire1")) && shooting) {
+			_shooting = true;
+		} else if ((!still || !Input.GetButton("Fire1")) && _shooting) {
 			slimeEmitter.Stop();
-			shooting = false;
+			_shooting = false;
 		}
 	}
 
