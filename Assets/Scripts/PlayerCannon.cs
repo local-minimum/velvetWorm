@@ -9,6 +9,12 @@ public class PlayerCannon : MonoBehaviour {
 	[Range(0f, 0.1f)]
 	public float shootingWobbling = 0.05f;
 
+	[Range(0f, 10f)]
+	public float shootingWobblingF = 1f;
+
+	private float _rndWobblingX;
+	private float _rndWobblingY = 0f;
+
 	[Range(0f, 0.5f)]
 	public float rotationSpeed = 0.1f;
 
@@ -52,8 +58,13 @@ public class PlayerCannon : MonoBehaviour {
 	private bool still = false;
 	private bool stillTransition = false;
 
+	public ParticleSystem slimeEmitter;
+	private bool shooting = false;
+	private float perlinMean = 0.4652489f;
+
 	// Use this for initialization
 	void Start () {
+		_rndWobblingX = 100f * Random.value;
 	}
 	
 	// Update is called once per frame
@@ -61,6 +72,10 @@ public class PlayerCannon : MonoBehaviour {
 		if (headRB.velocity.sqrMagnitude < stillSpeedSq) {
 			if (still) {
 				curQuat.w = Mathf.Clamp(curQuat.w + Input.GetAxis("Vertical") * rotationSpeed * _flipYVal, -1f - flexAngle, -1f + flexAngle);
+				if (shooting) {
+					_rndWobblingY += shootingWobblingF * Time.deltaTime;
+					curQuat.w += shootingWobbling * (Mathf.PerlinNoise(_rndWobblingX, _rndWobblingY) - perlinMean);
+				}
 				transform.localRotation = curQuat;
 			} else {
 				if (!stillTransition)
@@ -71,6 +86,17 @@ public class PlayerCannon : MonoBehaviour {
 				StartCoroutine(Deenergize());
 		}
 
+	}
+
+	void FixedUpdate() {
+		Debug.Log(string.Format("{0} {1} {2}", still, Input.GetButton("Fire1"), slimeEmitter.isPaused));
+		if (still && Input.GetButton("Fire1") && !shooting) {
+		    slimeEmitter.Play();
+			shooting = true;
+		} else if ((!still || !Input.GetButton("Fire1")) && shooting) {
+			slimeEmitter.Stop();
+			shooting = false;
+		}
 	}
 
 	IEnumerator<WaitForSeconds> Energize() {
