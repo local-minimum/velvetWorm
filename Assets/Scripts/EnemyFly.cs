@@ -3,32 +3,26 @@ using System.Collections;
 
 public class EnemyFly : MonoBehaviour {
 
-	private Vector2 direction;
+
 
 	[Range(0,10)]
 	public float baseSpeed;
 
-	public int scr_width;
-	public int scr_height;
+	[Range(0,1)]
+	public float dir_change;
 
 
-	private float speedPerlinX = 0f;
-	private float speedPerlinY = 0f;
-	
-	private float altitudePerlinX = 0f;
-	private float altitudePerlinY = 0f;
 
-	private float leftrightPerlinX = 0f;
-	private float leftrightPerlinY = 0f;
+	public int pnt_x;
+	public int pnt_y;
+	public int pnt_x_dist;
+	public int pnt_y_dist;
+
 
 	// Use this for initialization
 	public void Start ()
 	{
-		direction = Vector2.right;
 
-		speedPerlinX = Random.value * 100;
-		altitudePerlinX = Random.value * 100;
-		leftrightPerlinX = Random.value * 100;
 	}
 
 
@@ -36,17 +30,39 @@ public class EnemyFly : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
-// 		rigidbody2D.velocity = direction;
 
-		Vector3 move = transform.localPosition;
 
-		Vector2 speed = Vector2.right;
+		Vector2 newDir = new Vector2(Random.value*2 - 1, Random.value*2 - 1 );
 
-		float altitude = transform.localPosition.y + Mathf.PerlinNoise(altitudePerlinX,1);
 
-		direction = rigidbody2D.velocity;
+		newDir = newDir*dir_change + rigidbody2D.velocity * (1.0f - dir_change);
 
-		rigidbody2D.velocity = direction * Mathf.PerlinNoise(altitudePerlinX,altitudePerlinY);
+
+		rigidbody2D.velocity = Vector2.ClampMagnitude(newDir * 1.5f, baseSpeed);
+
+//			Vector2.ClampMagnitude(rigidbody2D.velocity, baseSpeed);
+//		rigidbody2D.AddForce( newDir, ForceMode2D.Force);
+
+		if (transform.localPosition.x > (pnt_x + pnt_x_dist))
+		{
+			rigidbody2D.AddForce(-baseSpeed * Vector2.right,ForceMode2D.Force);
+			
+		}
+		if (transform.localPosition.x < (pnt_x - pnt_x_dist))
+		{
+			rigidbody2D.AddForce(baseSpeed* Vector2.right,ForceMode2D.Force);
+			
+		}
+		if (transform.localPosition.y > (pnt_y + pnt_y_dist))
+		{
+			rigidbody2D.AddForce(-baseSpeed * Vector2.up,ForceMode2D.Force);
+			
+		}
+		if (transform.localPosition.y < (pnt_y - pnt_y_dist))
+		{
+			rigidbody2D.AddForce(baseSpeed*Vector2.up,ForceMode2D.Force);
+			
+		}
 
 //		transform.localPosition.x += Mathf.PerlinNoise(-1,1);
 //		transform.localPosition.y += Mathf.PerlinNoise(-1,1);
