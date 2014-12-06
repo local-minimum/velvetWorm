@@ -20,6 +20,8 @@ public class PlayerCannon : MonoBehaviour {
 
 	private Quaternion curQuat = new Quaternion(0f, 0f, 1f, -1f);
 
+	public PlayerMovement headMovement;
+
 	[SerializeField]
 	[HideInInspector]
 	private bool _flipY = false;
@@ -100,6 +102,7 @@ public class PlayerCannon : MonoBehaviour {
 
 	IEnumerator<WaitForSeconds> Energize() {
 		stillTransition = true;
+		headMovement.hugSurface = false;
 		rotationArmDeactivated = cannonArm.angle;
 		float rotTarget = rotationArmDeactivated + rotationArmActivated;
 		float startT = Time.timeSinceLevelLoad;
@@ -124,7 +127,7 @@ public class PlayerCannon : MonoBehaviour {
 			cannonArm.angle = Mathf.Lerp(cannonArm.angle, rotTarget, (curT - startT) / armActivationTime);
 			yield return new WaitForSeconds(0.05f);
 		}
-
+		headMovement.hugSurface = true;
 		still = false;
 		stillTransition = false;
 		
