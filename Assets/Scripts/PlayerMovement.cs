@@ -3,6 +3,8 @@ using System.Collections;
 
 public class PlayerMovement : MonoBehaviour {
 
+	public bool inputSegment = false;
+	public PlayerSegment mySegment;
 	public LayerMask layerMask;
 	public bool hugSurface = true;
 	public bool wantingToMove = true;
@@ -18,6 +20,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		mySegment = gameObject.GetComponent<PlayerSegment>();
 		playerNormal = transform.up;
 	}
 
@@ -31,7 +34,7 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	private void Movement() {
-		float d = Input.GetAxisRaw ("Horizontal");
+		float d = inputSegment ? 0f : Input.GetAxisRaw ("Horizontal");
 		wantingToMove = d != 0;
 
 			if (hugSurface) {
@@ -50,7 +53,8 @@ public class PlayerMovement : MonoBehaviour {
 				playerNormal = Vector2.Lerp (playerNormal, surfaceNormal, smoothTurn * Time.deltaTime);
 				transform.up = playerNormal;
 				
-				rigidbody2D.velocity = transform.right * Time.deltaTime * speed * d;
+				if (wantingToMove)
+					rigidbody2D.velocity = transform.right * Time.deltaTime * speed * d;
 			}
 
 		

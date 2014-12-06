@@ -34,7 +34,7 @@ public class PlayerSegment : MonoBehaviour {
 	void FixedUpdate () {
 		if (!followsLead || !previousSegm) 
 			return;
-
+//
 //		float targetAngle = previousSegm.angle;
 //
 //		if (nextSegm) {
@@ -45,7 +45,7 @@ public class PlayerSegment : MonoBehaviour {
 //
 //		angle = Mathf.LerpAngle(angle, targetAngle / 2f, 0.25f);
 
-		transform.position += (previousSegm.nextLink.position - prevLink.position) / 1.25f;
+		transform.position += (previousSegm.nextLink.position - prevLink.position) / 1;
 
 	}
 }
