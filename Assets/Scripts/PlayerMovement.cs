@@ -2,11 +2,12 @@
 using System.Collections;
 
 public class PlayerMovement : MonoBehaviour {
-	public LayerMask layerMask;
 
+	public LayerMask layerMask;
+	public bool hugSurface = true;
 	public float speed = 100f;
-	public float playerNormalGravity = 10f;
-	public float turnSpeed = 180f;
+	public float playerNormalGravity = 30f;
+	public float turnSpeed = 90f;
 	public float smoothTurn = 10f;
 	public float rayMaxDistance = 1f;
 
@@ -28,21 +29,23 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	private void Movement() {
-		Vector2 v = new Vector2 (transform.position.x, transform.position.y);
+				if (hugSurface) {
+						Vector2 v = new Vector2 (transform.position.x, transform.position.y);
 
-		// Try to detect a surface normal, otherwise up
-		RaycastHit2D hit = Physics2D.Raycast(transform.position, -playerNormal, rayMaxDistance, layerMask);
-		if (hit.collider != null) {
-			surfaceNormal = hit.normal;
-		} else {
-			surfaceNormal = Vector2.up;
+						// Try to detect a surface normal, otherwise up
+						RaycastHit2D hit = Physics2D.Raycast (transform.position, -playerNormal, rayMaxDistance, layerMask);
+						if (hit.collider != null) {
+								surfaceNormal = hit.normal;
+						} else {
+								surfaceNormal = Vector2.up;
+						}
+
+						Debug.DrawLine (v, v + surfaceNormal, Color.green);
+
+						playerNormal = Vector2.Lerp (playerNormal, surfaceNormal, smoothTurn * Time.deltaTime);
+						transform.up = playerNormal;
+
+						rigidbody2D.velocity = transform.right * Time.deltaTime * speed * Input.GetAxisRaw ("Horizontal");
+				}
 		}
-
-		Debug.DrawLine(v, v + surfaceNormal, Color.green);
-
-		playerNormal = Vector2.Lerp(playerNormal, surfaceNormal, smoothTurn * Time.deltaTime);
-		transform.up = playerNormal;
-
-		rigidbody2D.velocity = transform.right * Time.deltaTime * speed * Input.GetAxisRaw ("Horizontal");
-	}
 }
