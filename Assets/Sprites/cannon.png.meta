@@ -1,8 +1,8 @@
 fileFormatVersion: 2
-guid: 1c1169d7f8509724197105a1eca8e344
+guid: 74b31bb4828f6d74b981352194866e23
 TextureImporter:
   fileIDToRecycleName:
-    21300000: placeholderCannonArm
+    21300000: cannon
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -35,7 +35,7 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 4
+  alignment: 0
   spritePivot: {x: .5, y: .5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100

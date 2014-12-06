@@ -3,23 +3,25 @@ using System.Collections;
 
 public class PlayerMovement : MonoBehaviour {
 
-	public float speed = 100;
-	public float playerNormalGravity = 30;
-	public float turnSpeed = 90;
-	public float smoothTurn = 10;
-	//public float deltaGround = 0.2f;
-	public float rayMaxDistance = 2;
+	public bool inputSegment = false;
+	public PlayerSegment mySegment;
+	public LayerMask layerMask;
+	public bool hugSurface = true;
+	public bool wantingToMove = true;
+
+	public float speed = 100f;
+	public float playerNormalGravity = 30f;
+	public float turnSpeed = 90f;
+	public float smoothTurn = 10f;
+	public float rayMaxDistance = 1f;
 
 	private Vector2 playerNormal;
 	private Vector2 surfaceNormal;
-	//private float distanceToGround;
-	//private bool isGrounded;
 
 	// Use this for initialization
 	void Start () {
+		mySegment = gameObject.GetComponent<PlayerSegment>();
 		playerNormal = transform.up;
-		//rigidbody.freezeRotation = true; only 3d?
-		//distanceToGround = collider2D.bounds.extents.y - collider2D.bounds.center.y;
 	}
 
 	void FixedUpdate() {
@@ -32,38 +34,29 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	private void Movement() {
-		/*
-		//transform.Rotate (0, Input.GetAxis ("Movement") * turnSpeed * Time.deltaTime, 0);
+		float d = inputSegment ? 0f : Input.GetAxisRaw ("Horizontal");
+		wantingToMove = Input.GetButton("Horizontal");
 
-		RaycastHit2D hit = Physics2D.Raycast(transform.position, -playerNormal, rayMaxDistance);
-		if (hit.collider != null) {
-			//isGrounded = hit.distance <= (distanceToGround + deltaGround);
-			Debug.DrawLine(hit.point, hit.normal);
-			surfaceNormal = hit.normal;
-		} else {
-			//isGrounded = false;
-			surfaceNormal = Vector2.up;
-		}
+			if (hugSurface) {
+				Vector2 v = new Vector2 (transform.position.x, transform.position.y);
+				
+				// Try to detect a surface normal, otherwise up
+				RaycastHit2D hit = Physics2D.Raycast (transform.position, -playerNormal, rayMaxDistance, layerMask);
+				if (hit.collider != null) {
+					surfaceNormal = hit.normal;
+				} else {
+					surfaceNormal = Vector2.up;
+				}
+				
+				Debug.DrawLine (v, v + surfaceNormal, Color.green);
+				
+				playerNormal = Vector2.Lerp (playerNormal, surfaceNormal, smoothTurn * Time.deltaTime);
+				transform.up = playerNormal;
+				
+				if (wantingToMove)
+					rigidbody2D.velocity = transform.right * Time.deltaTime * speed * d;
+			}
 
-		playerNormal = Vector2.Lerp(playerNormal, surfaceNormal, smoothTurn * Time.deltaTime);
-
-		Vector2 playerForward = 
-*/
-		//Quaternion targetRot = Quaternion.LookRotation(playerForward, playerNormal);
-
-		//transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, smoothTurn * Time.deltaTime);
-
-		//transform.Translate(0, 0, Input.GetAxis("Vertical") * speed * Time.deltaTime); 
-
-
-		float d = Input.GetAxisRaw ("Movement");
-		if (d < 0) {
-			rigidbody2D.velocity = -transform.right * Time.deltaTime * speed;
-		} else if (d > 0) {
-			rigidbody2D.velocity = transform.right * Time.deltaTime * speed;
-		} else {
-			rigidbody2D.velocity = Vector2.zero;
-		}
-
+		
 	}
 }

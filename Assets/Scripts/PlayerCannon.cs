@@ -3,16 +3,22 @@ using System.Collections.Generic;
 
 public class PlayerCannon : MonoBehaviour {
 
-	[Range(0f, 0.5f)]
+	[Range(0f, 45f)]
 	public float flexAngle = 0.5f;
 
 	[Range(0f, 0.1f)]
 	public float shootingWobbling = 0.05f;
 
+	[Range(0f, 10f)]
+	public float shootingWobblingF = 1f;
+
+	private float _rndWobblingX;
+	private float _rndWobblingY = 0f;
+
 	[Range(0f, 0.5f)]
 	public float rotationSpeed = 0.1f;
 
-	private Quaternion curQuat = new Quaternion(0f, 0f, 1f, -1f);
+	public PlayerMovement headMovement;
 
 	[SerializeField]
 	[HideInInspector]
@@ -38,11 +44,10 @@ public class PlayerCannon : MonoBehaviour {
 		}
 	}
 
-	public Transform cannonArm = null;
+	public PlayerSegment cannonArm = null;
 
 	public float rotationArmActivated = 2.2f;
-	public float rotationArmDeactivated = Mathf.PI;
-	private Quaternion localRotationArm = new Quaternion(0f, 0f, 1f, Mathf.PI);
+	private float rotationArmDeactivated = Mathf.PI;
 	public float armActivationTime = 0.5f;
 
 	public Rigidbody2D headRB = null;
@@ -51,36 +56,109 @@ public class PlayerCannon : MonoBehaviour {
 
 	private bool still = false;
 	private bool stillTransition = false;
+	
+	private bool _shooting = false;
+	private float perlinMean = 0.4652489f;
+	private float baseW;
+
+	public bool ready {
+		get {
+			return still;
+		}
+	}
+
+	public float angle {
+		get {
+			return transform.localEulerAngles.z ;
+		}
+		
+		set {
+//
+//			while (Mathf.Abs(value) > 360)
+//				value -= Mathf.Sign(value) * 360;
+//			
+			transform.localRotation = Quaternion.AngleAxis(WrapAngle(value), Vector3.forward);
+			
+		}
+	}
 
 	// Use this for initialization
 	void Start () {
+		baseW = angle;
+		_rndWobblingX = 100f * Random.value;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (headRB.velocity.sqrMagnitude < stillSpeedSq) {
+		if (headRB.velocity.sqrMagnitude < stillSpeedSq && !headMovement.wantingToMove) {
 			if (still) {
-				curQuat.w = Mathf.Clamp(curQuat.w + Input.GetAxis("Vertical") * rotationSpeed * _flipYVal, -1f - flexAngle, -1f + flexAngle);
-				transform.localRotation = curQuat;
+				float w = angle + Input.GetAxis("Vertical") * rotationSpeed * _flipYVal;
+				if (_shooting) {
+					_rndWobblingY += shootingWobblingF * Time.deltaTime;
+					w += shootingWobbling * (Mathf.PerlinNoise(_rndWobblingX, _rndWobblingY) - perlinMean);
+				}
+				angle = ClampRotation(w, -flexAngle, flexAngle, baseW); 
+//				angle = Mathf.Clamp(angle, baseW - flexAngle, baseW + flexAngle);
+	
 			} else {
 				if (!stillTransition)
 					StartCoroutine(Energize());
 			}
 		} else {
-			if (!stillTransition)
+			if (!stillTransition && still)
 				StartCoroutine(Deenergize());
 		}
 
 	}
 
+	float ClampRotation(float angle, float minAngle, float maxAngle, float clampAroundAngle = 0)
+	{
+
+
+		angle = WrapAngle(angle) - WrapAngle(clampAroundAngle);
+		
+
+		//Clamp to desired range
+		angle = Mathf.Clamp(angle, minAngle, maxAngle);
+
+
+		//Set the angle back to the transform and rotate it back to right side up
+		return clampAroundAngle + angle;
+	}
+
+
+	//Make sure angle is within 0,360 range
+	float WrapAngle(float angle)
+	{
+		//If its negative rotate until its positive
+		while (angle < 0)
+			angle += 360;
+		
+		//If its to positive rotate until within range
+		return Mathf.Repeat(angle, 360);
+	}
+
+	void FixedUpdate() {
+//		Debug.Log(string.Format("{0} {1} {2}", still, Input.GetButton("Fire1"), slimeEmitter.isPaused));
+		if (still && Input.GetButton("Fire1") && !_shooting) {
+//		    particleSystem.Play();
+			_shooting = true;
+		} else if ((!still || !Input.GetButton("Fire1")) && _shooting) {
+//			particleSystem.Stop();
+			_shooting = false;
+		}
+	}
+
 	IEnumerator<WaitForSeconds> Energize() {
 		stillTransition = true;
+		headMovement.hugSurface = false;
+		rotationArmDeactivated = cannonArm.angle;
+		float rotTarget = rotationArmDeactivated + rotationArmActivated;
 		float startT = Time.timeSinceLevelLoad;
 		float curT = startT;
 		while (curT - startT < armActivationTime) {
 			curT = Time.timeSinceLevelLoad;
-			localRotationArm.w = Mathf.Lerp(localRotationArm.w, rotationArmActivated, (curT - startT) / armActivationTime);
-			cannonArm.localRotation = localRotationArm;
+			cannonArm.angle = Mathf.LerpAngle(cannonArm.angle, rotTarget, (curT - startT) / armActivationTime);
 			yield return new WaitForSeconds(0.05f);
 		}
 		still = true;
@@ -90,14 +168,15 @@ public class PlayerCannon : MonoBehaviour {
 
 	IEnumerator<WaitForSeconds> Deenergize() {
 		stillTransition = true;
+		float rotTarget = rotationArmDeactivated;
 		float startT = Time.timeSinceLevelLoad;
 		float curT = startT;
 		while (curT - startT < armActivationTime) {
 			curT = Time.timeSinceLevelLoad;
-			localRotationArm.w = Mathf.Lerp(localRotationArm.w, rotationArmDeactivated, (curT - startT) / armActivationTime);
-			cannonArm.localRotation = localRotationArm;
+			cannonArm.angle = Mathf.LerpAngle(cannonArm.angle, rotTarget, (curT - startT) / armActivationTime);
 			yield return new WaitForSeconds(0.05f);
 		}
+		headMovement.hugSurface = true;
 		still = false;
 		stillTransition = false;
 		
