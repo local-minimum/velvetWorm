@@ -34,28 +34,25 @@ public class PlayerMovement : MonoBehaviour {
 		float d = Input.GetAxisRaw ("Horizontal");
 		wantingToMove = d != 0;
 
-		if (hugSurface) {
-			Vector2 v = new Vector2 (transform.position.x, transform.position.y);
-
-			// Try to detect a surface normal, otherwise up
-			RaycastHit2D hit = Physics2D.Raycast (transform.position, -playerNormal, rayMaxDistance, layerMask);
-			if (hit.collider != null) {
+			if (hugSurface) {
+				Vector2 v = new Vector2 (transform.position.x, transform.position.y);
+				
+				// Try to detect a surface normal, otherwise up
+				RaycastHit2D hit = Physics2D.Raycast (transform.position, -playerNormal, rayMaxDistance, layerMask);
+				if (hit.collider != null) {
 					surfaceNormal = hit.normal;
-			} else {
+				} else {
 					surfaceNormal = Vector2.up;
+				}
+				
+				Debug.DrawLine (v, v + surfaceNormal, Color.green);
+				
+				playerNormal = Vector2.Lerp (playerNormal, surfaceNormal, smoothTurn * Time.deltaTime);
+				transform.up = playerNormal;
+				
+				rigidbody2D.velocity = transform.right * Time.deltaTime * speed * d;
 			}
 
-			Debug.DrawLine (v, v + surfaceNormal, Color.green);
-
-			if (d < 0) {
-				rigidbody2D.velocity = -transform.right * Time.deltaTime * speed;
-			} else if (d > 0) {
-				rigidbody2D.velocity = transform.right * Time.deltaTime * speed;
-			} else {
-				rigidbody2D.velocity = Vector2.zero;
-			}
-
-		}
-
+		
 	}
 }
