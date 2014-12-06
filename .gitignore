@@ -1,8 +1,13 @@
 # =============== #
 # Unity generated #
 # =============== #
-Temp/
-Library/
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+
+#Unity3D Generated File On Crash Reports
+sysinfo.txt
 
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
@@ -29,3 +34,4 @@ obj/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
