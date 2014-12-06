@@ -70,7 +70,7 @@ public class PlayerCannon : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (headRB.velocity.sqrMagnitude < stillSpeedSq) {
+		if (headRB.velocity.sqrMagnitude < stillSpeedSq && !headMovement.wantingToMove) {
 			if (still) {
 				curQuat.w = Mathf.Clamp(curQuat.w + Input.GetAxis("Vertical") * rotationSpeed * _flipYVal, -6.5f - flexAngle, -6.5f + flexAngle);
 				if (shooting) {
@@ -83,7 +83,7 @@ public class PlayerCannon : MonoBehaviour {
 					StartCoroutine(Energize());
 			}
 		} else {
-			if (!stillTransition)
+			if (!stillTransition && still)
 				StartCoroutine(Deenergize());
 		}
 
