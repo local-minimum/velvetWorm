@@ -5,8 +5,7 @@ public class PlayerSegment : MonoBehaviour {
 
 	public PlayerCannon cannon;
 	public PlayerSegment prevSegment = null;
-
-	private float _angle = 0f;
+	
 	private bool _shooting = false;
 	float _walkstart = 0f;
 	public float walkDelay = 0.1f;
@@ -14,12 +13,14 @@ public class PlayerSegment : MonoBehaviour {
 
 	public float angle {
 		get {
-			return _angle;
+			return transform.eulerAngles.z ;
 		}
 
 		set {
-			_angle = value;
-			transform.rotation = Quaternion.AngleAxis(_angle, Vector3.forward);
+			while (Mathf.Abs(value) > 360)
+				value -= Mathf.Sign(value) * 360;
+
+			transform.rotation = Quaternion.AngleAxis(value, Vector3.forward);
 
 		}
 	}
@@ -34,7 +35,6 @@ public class PlayerSegment : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		_angle = Quaternion.Dot(transform.rotation, new Quaternion(0f, 0f, 1f, 0f));
 		anim = gameObject.GetComponent<Animator>();
 	}
 	
@@ -46,7 +46,6 @@ public class PlayerSegment : MonoBehaviour {
 		if (cannon.ready) {
 			if (!_shooting) {
 				_shooting = true;
-				Debug.Log("No walk");
 				anim.Play("Shooting");
 			}
 		} else {

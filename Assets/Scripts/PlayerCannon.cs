@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class PlayerCannon : MonoBehaviour {
 
-	[Range(0f, 0.5f)]
+	[Range(0f, 45f)]
 	public float flexAngle = 0.5f;
 
 	[Range(0f, 0.1f)]
@@ -17,8 +17,6 @@ public class PlayerCannon : MonoBehaviour {
 
 	[Range(0f, 0.5f)]
 	public float rotationSpeed = 0.1f;
-
-	private Quaternion curQuat = new Quaternion(0f, 0f, 1f, -1f);
 
 	public PlayerMovement headMovement;
 
@@ -58,10 +56,10 @@ public class PlayerCannon : MonoBehaviour {
 
 	private bool still = false;
 	private bool stillTransition = false;
-
-	public ParticleSystem slimeEmitter;
+	
 	private bool _shooting = false;
 	private float perlinMean = 0.4652489f;
+	private float baseW;
 
 	public bool ready {
 		get {
@@ -69,8 +67,24 @@ public class PlayerCannon : MonoBehaviour {
 		}
 	}
 
+	public float angle {
+		get {
+			return transform.localEulerAngles.z ;
+		}
+		
+		set {
+//
+//			while (Mathf.Abs(value) > 360)
+//				value -= Mathf.Sign(value) * 360;
+//			
+			transform.localRotation = Quaternion.AngleAxis(WrapAngle(value), Vector3.forward);
+			
+		}
+	}
+
 	// Use this for initialization
 	void Start () {
+		baseW = angle;
 		_rndWobblingX = 100f * Random.value;
 	}
 	
@@ -78,12 +92,14 @@ public class PlayerCannon : MonoBehaviour {
 	void Update () {
 		if (headRB.velocity.sqrMagnitude < stillSpeedSq && !headMovement.wantingToMove) {
 			if (still) {
-				curQuat.w = Mathf.Clamp(curQuat.w + Input.GetAxis("Vertical") * rotationSpeed * _flipYVal, -6.5f - flexAngle, -6.5f + flexAngle);
+				float w = angle + Input.GetAxis("Vertical") * rotationSpeed * _flipYVal;
 				if (_shooting) {
 					_rndWobblingY += shootingWobblingF * Time.deltaTime;
-					curQuat.w += shootingWobbling * (Mathf.PerlinNoise(_rndWobblingX, _rndWobblingY) - perlinMean);
+					w += shootingWobbling * (Mathf.PerlinNoise(_rndWobblingX, _rndWobblingY) - perlinMean);
 				}
-				transform.localRotation = curQuat;
+				angle = ClampRotation(w, -flexAngle, flexAngle, baseW); 
+//				angle = Mathf.Clamp(angle, baseW - flexAngle, baseW + flexAngle);
+	
 			} else {
 				if (!stillTransition)
 					StartCoroutine(Energize());
@@ -95,13 +111,40 @@ public class PlayerCannon : MonoBehaviour {
 
 	}
 
+	float ClampRotation(float angle, float minAngle, float maxAngle, float clampAroundAngle = 0)
+	{
+
+
+		angle = WrapAngle(angle) - WrapAngle(clampAroundAngle);
+		
+
+		//Clamp to desired range
+		angle = Mathf.Clamp(angle, minAngle, maxAngle);
+
+
+		//Set the angle back to the transform and rotate it back to right side up
+		return clampAroundAngle + angle;
+	}
+
+
+	//Make sure angle is within 0,360 range
+	float WrapAngle(float angle)
+	{
+		//If its negative rotate until its positive
+		while (angle < 0)
+			angle += 360;
+		
+		//If its to positive rotate until within range
+		return Mathf.Repeat(angle, 360);
+	}
+
 	void FixedUpdate() {
 //		Debug.Log(string.Format("{0} {1} {2}", still, Input.GetButton("Fire1"), slimeEmitter.isPaused));
 		if (still && Input.GetButton("Fire1") && !_shooting) {
-		    slimeEmitter.Play();
+//		    particleSystem.Play();
 			_shooting = true;
 		} else if ((!still || !Input.GetButton("Fire1")) && _shooting) {
-			slimeEmitter.Stop();
+//			particleSystem.Stop();
 			_shooting = false;
 		}
 	}
@@ -115,7 +158,7 @@ public class PlayerCannon : MonoBehaviour {
 		float curT = startT;
 		while (curT - startT < armActivationTime) {
 			curT = Time.timeSinceLevelLoad;
-			cannonArm.angle = Mathf.Lerp(cannonArm.angle, rotTarget, (curT - startT) / armActivationTime);
+			cannonArm.angle = Mathf.LerpAngle(cannonArm.angle, rotTarget, (curT - startT) / armActivationTime);
 			yield return new WaitForSeconds(0.05f);
 		}
 		still = true;
@@ -130,7 +173,7 @@ public class PlayerCannon : MonoBehaviour {
 		float curT = startT;
 		while (curT - startT < armActivationTime) {
 			curT = Time.timeSinceLevelLoad;
-			cannonArm.angle = Mathf.Lerp(cannonArm.angle, rotTarget, (curT - startT) / armActivationTime);
+			cannonArm.angle = Mathf.LerpAngle(cannonArm.angle, rotTarget, (curT - startT) / armActivationTime);
 			yield return new WaitForSeconds(0.05f);
 		}
 		headMovement.hugSurface = true;

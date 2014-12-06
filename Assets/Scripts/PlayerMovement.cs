@@ -35,7 +35,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	private void Movement() {
 		float d = inputSegment ? 0f : Input.GetAxisRaw ("Horizontal");
-		wantingToMove = d != 0;
+		wantingToMove = Input.GetButton("Horizontal");
 
 			if (hugSurface) {
 				Vector2 v = new Vector2 (transform.position.x, transform.position.y);
