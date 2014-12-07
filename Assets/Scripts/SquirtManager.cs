@@ -115,6 +115,8 @@ public class SquirtManager : MonoBehaviour {
 				if(hit.collider.gameObject.tag == "Player") {
 					//Todo: hitcode
 
+				} else if (hit.collider.gameObject.tag == "Enemy") {
+					hit.collider.gameObject.GetComponent<EnemyFly>().Kill(p.Team);
 				}
 			}
 			//}
