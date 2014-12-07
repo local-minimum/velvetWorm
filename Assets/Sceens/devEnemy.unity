@@ -202,12 +202,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1c9e2291ab2fa44196eabcee6975479, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseSpeed: 3.79999995
+  baseSpeed: 3
   dir_change: .349999994
-  scr_width: 26
-  scr_height: 12
-  pnt_x: 0
-  pnt_y: 0
+  pnt_x: 2
+  pnt_y: 2
+  pnt_x_dist: 5
+  pnt_y_dist: 3
 --- !u!212 &1002396141
 SpriteRenderer:
   m_ObjectHideFlags: 0
