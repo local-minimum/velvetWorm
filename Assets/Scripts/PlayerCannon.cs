@@ -66,7 +66,16 @@ public class PlayerCannon : MonoBehaviour {
 	private float baseW;
 	private Squirt squirt;
 	public float squirtSpeed = 1f;
-	public float squirtDists =1f;
+	public float squirtDists = 1f;
+
+	[Range(0f, 10f)]
+	public float maxSlimingTime = 2f;
+
+	[Range(0f, 10f)]
+	public float slimeBetweenTime = 0.5f;
+
+	private float lastSlime;
+
 	public bool ready {
 		get {
 			return still;
@@ -98,7 +107,30 @@ public class PlayerCannon : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (headRB.velocity.sqrMagnitude < stillSpeedSq && !headMovement.wantingToMove) {
+		if (stillTransition)
+			return;
+
+		if  (still && (headMovement.wantingToMove || headRB.velocity.sqrMagnitude > stillSpeedSq)) {
+			StartCoroutine(Deenergize());
+		} else if (_shooting) {
+			_rndWobblingY += shootingWobblingF * Time.deltaTime;
+			
+			angle = ClampRotation(angle + shootingWobbling * (Mathf.PerlinNoise(_rndWobblingX, _rndWobblingY) - perlinMean),
+			                      -flexAngle, flexAngle, baseW); 
+
+		} else if (still) {
+
+				angle = ClampRotation(angle + Input.GetAxis("Vertical") * rotationSpeed * _flipYVal, 
+				                      -flexAngle, flexAngle, baseW); 
+
+		} else {
+
+					StartCoroutine(Energize());
+		}
+
+		/*
+
+		if (headRB.velocity.sqrMagnitude < stillSpeedSq && !headMovement.wantingToMove && (Time.timeSinceLevelLoad - lastSlime) >  ) {
 			if (still) {
 				float w = angle + Input.GetAxis("Vertical") * rotationSpeed * _flipYVal;
 				if (_shooting) {
@@ -115,7 +147,7 @@ public class PlayerCannon : MonoBehaviour {
 		} else {
 			if (!stillTransition && still)
 				StartCoroutine(Deenergize());
-		}
+		}*/
 
 	}
 
@@ -148,18 +180,19 @@ public class PlayerCannon : MonoBehaviour {
 
 	void FixedUpdate() {
 //		Debug.Log(string.Format("{0} {1} {2}", still, Input.GetButton("Fire1"), slimeEmitter.isPaused));
-		if (still && Input.GetButton("Fire1") && !_shooting) {
+		if (still && Input.GetButton("Fire1") && !_shooting &&  (Time.timeSinceLevelLoad - lastSlime > slimeBetweenTime)) {
 //		    particleSystem.Play();
 			_shooting = true;
 			squirt = new Squirt();
 			squirter.AddSquirt(squirt);
 			AddSquirts();
-
-		} else if ((!still || !Input.GetButton("Fire1")) && _shooting) {
+		} else if (_shooting && (Time.timeSinceLevelLoad - lastSlime < maxSlimingTime ) && Input.GetButton("Fire1")  ) {
+			AddSquirts();
+		
+		} else if (_shooting) {
 //			particleSystem.Stop();
 			_shooting = false;
-		} else if (_shooting) {
-			AddSquirts();
+			lastSlime = Time.timeSinceLevelLoad;
 		}
 	}
 
@@ -187,6 +220,7 @@ public class PlayerCannon : MonoBehaviour {
 		}
 		still = true;
 		stillTransition = false;
+		lastSlime = Time.timeSinceLevelLoad;
 
 	}
 
@@ -203,7 +237,6 @@ public class PlayerCannon : MonoBehaviour {
 		headMovement.hugSurface = true;
 		still = false;
 		stillTransition = false;
-		
 	}
 
 }
