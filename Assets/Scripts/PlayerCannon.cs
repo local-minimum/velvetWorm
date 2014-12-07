@@ -117,7 +117,7 @@ public class PlayerCannon : MonoBehaviour {
 				angle = ClampRotation(angle + Input.GetAxis("Vertical") * rotationSpeed * _flipYVal, 
 				                      -flexAngle, flexAngle, baseW); 
 
-		} else {
+		} else if (!headMovement.wantingToMove) {
 
 					StartCoroutine(Energize());
 		}
