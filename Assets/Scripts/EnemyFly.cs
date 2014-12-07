@@ -5,6 +5,11 @@ using System.Linq;
 public class EnemyFly : MonoBehaviour {
 
 
+	[Range(0, 50f)]
+	public float deadDropGravity;
+
+	[Range(0, 100f)]
+	public float deadTorque;
 
 	[Range(0,10)]
 	public float baseSpeed;
@@ -25,13 +30,20 @@ public class EnemyFly : MonoBehaviour {
 	private int pnt_x_dist;
 	private int pnt_y_dist;
 
-	public bool isAlive = true;
+	private bool _isAlive = true;
 
+	public bool isAlive {
+		get {
+			return _isAlive;
+		}
+
+	}
 
 	// Use this for initialization
 	public void Start ()
 	{
 		points = GameObject.FindGameObjectsWithTag("FlyTag").Select(e => e.transform).ToArray();
+		transform.position = points[Random.Range(0, points.Count() - 1)].position;
 		StartCoroutine(pointSwitcher());
 	}
 
@@ -40,6 +52,9 @@ public class EnemyFly : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
+		if (!_isAlive)
+			return;
+
 		Debug.DrawLine(transform.position, new Vector3(pnt_x,pnt_y));
 
 		Vector2 newDir = new Vector2(Random.value*2 - 1, Random.value*2 - 1 );
@@ -72,13 +87,18 @@ public class EnemyFly : MonoBehaviour {
 
 	public void Kill(int player)
 	{
-		isAlive = false;
+		_isAlive = false;
+		rigidbody2D.velocity = Vector2.zero;
+		rigidbody2D.fixedAngle = false;
+		rigidbody2D.AddTorque(Random.Range(-deadTorque, deadTorque));
+		rigidbody2D.gravityScale = deadDropGravity;
+		gameObject.layer = LayerMask.NameToLayer("Food");
 
 	}
 
 	IEnumerator<WaitForSeconds> pointSwitcher()
 	{
-		while (isAlive)
+		while (_isAlive)
 		{
 			int index = Random.Range(0,points.Length-1);
 			pnt_x = points[index].position.x;
