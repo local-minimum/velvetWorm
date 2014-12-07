@@ -59,8 +59,7 @@ public class PlayerMovement : MonoBehaviour {
 					rigidbody2D.velocity = transform.right * Time.deltaTime * speed * d;
 				
 			}
-
-		
+	
 	}
 
 	void TestFlip(float d) {

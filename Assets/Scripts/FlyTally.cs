@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 public class FlyTally : MonoBehaviour {
 
@@ -21,6 +22,12 @@ public class FlyTally : MonoBehaviour {
 		}
 	}
 
+	public float averageTime {
+		get {
+			return flyTimes.Sum() / (float) flyTimes.Count();
+		}
+	}
+
 	// Use this for initialization
 	void Start () {
 		Reset();
@@ -33,15 +40,15 @@ public class FlyTally : MonoBehaviour {
 		SetCurrentFlyTime();
 	}
 
-	void SetCurrentFlyTime() {
-		flyTimes[caugthFlies] = Time.timeSinceLevelLoad - lastKill;
+	public static string TimeToString(float f) {
+
 		float s = 0f;
-		if (flyTimes[caugthFlies] >= 1f)
- 			s = Mathf.Floor(flyTimes[caugthFlies]);
-
-		int mS = Mathf.RoundToInt((flyTimes[caugthFlies] % s) * 100f);
-
-
+		if (f >= 1f)
+			s = Mathf.Floor(f);
+		
+		int mS = Mathf.RoundToInt((f % s) * 100f);
+		
+		
 		if (mS == 100) {
 			mS = 0;
 			s += 1f;
@@ -50,7 +57,12 @@ public class FlyTally : MonoBehaviour {
 			mS = 0;
 		}
 
-		flyClocks[caugthFlies].text = string.Format("{0}:{1:00}", (int) s, mS);
+		return string.Format("{0}:{1:00}", (int) s, mS);
+	}
+
+	void SetCurrentFlyTime() {
+		flyTimes[caugthFlies] = Time.timeSinceLevelLoad - lastKill;
+		flyClocks[caugthFlies].text = TimeToString(flyTimes[caugthFlies]);
 	}
 
 	public void CatchFly () {

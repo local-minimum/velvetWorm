@@ -12,6 +12,21 @@ public class LevelCoordinator : MonoBehaviour {
 
 	public GameObject[] FlyTallyPrefabs;
 	public Canvas uiCanvas;
+	public UnityEngine.UI.Text recordTime;
+
+	public string lvlName;
+
+	private string recordTimeKey {
+		get {
+			return string.Format("{0}_{1}_recordTime", lvlName, numberOfPlayers);
+		}
+	}
+
+	public int numberOfPlayers {
+		get {
+			return players.Count();
+		}
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -24,6 +39,11 @@ public class LevelCoordinator : MonoBehaviour {
 
 		for (int i=0; i<startingEnemies; i++)
 			SpawnEnemy();
+
+
+		recordTime.text = string.Format("Best Time: {0}", 
+		                                FlyTally.TimeToString(PlayerPrefs.GetFloat(recordTimeKey, 999.99f)));
+	
 	}
 
 
@@ -63,7 +83,12 @@ public class LevelCoordinator : MonoBehaviour {
 	}
 
 	private void LevelWon(int team) {
-		Application.LoadLevel(Application.loadedLevel);
+		float t = flyTallies[team].averageTime;
+
+		if (PlayerPrefs.GetFloat(recordTimeKey, 999f) > t) 
+			PlayerPrefs.SetFloat(recordTimeKey, t);
+
+//		Application.LoadLevel(Application.loadedLevel);
 	}
 
 	private void SpawnEnemy() {
@@ -73,4 +98,5 @@ public class LevelCoordinator : MonoBehaviour {
 	private void SpawnEnemy(int idX) {
 		Instantiate(enemyPrefabs[idX]);
 	}
+	
 }
