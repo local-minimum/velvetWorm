@@ -11,12 +11,13 @@ public class LevelCoordinator : MonoBehaviour {
 	private List<PlayerCoordinator> players = new List<PlayerCoordinator>();
 
 	public GameObject[] FlyTallyPrefabs;
+	public Canvas uiCanvas;
 
 	// Use this for initialization
 	void Start () {
 
-//		foreach (PlayerCoordinator pc in GameObject.FindObjectsOfType<PlayerCoordinator>())
-//			players.Add(pc);
+		if (!uiCanvas)
+			uiCanvas = GameObject.FindObjectOfType<Canvas>();
 
 		players.AddRange(GameObject.FindObjectsOfType<PlayerCoordinator>());
 		setupTallies();
@@ -37,12 +38,14 @@ public class LevelCoordinator : MonoBehaviour {
 		foreach (int k in dropKeys)
 			flyTallies.Remove(k);
 
-		foreach (int k in players.Select(p => p.playerID).Where(p => !flyTallies.Keys.Where(k => k == p).Any()))
+		foreach (int k in players.Select(p => p.playerID).Where(p => !flyTallies.Keys.Where(k => k == p).Any())) {
+			int prefab = flyTallies.Count < FlyTallyPrefabs.Length - 1 ? flyTallies.Count : FlyTallyPrefabs.Length - 1;
 			flyTallies.Add(k, ((GameObject)
-			               Instantiate(FlyTallyPrefabs[
-			                            flyTallies.Count < FlyTallyPrefabs.Length - 1 ? 
-			                                       	flyTallies.Count : 
-			                                       	FlyTallyPrefabs.Length - 1])).GetComponent<FlyTally>());
+			               Instantiate(FlyTallyPrefabs[prefab])).GetComponent<FlyTally>());
+
+
+			flyTallies[k].transform.SetParent(uiCanvas.transform, false);
+		}
 	}
 
 	public void RegisterKill(int team, GameObject enemyGO) {
