@@ -6,7 +6,7 @@ public class LevelCoordinator : MonoBehaviour {
 	public int startingEnemies = 1;
 	public GameObject[] enemyPrefabs;
 
-	FlyTally[] flyTallies;
+	public FlyTally[] flyTallies;
 
 	// Use this for initialization
 	void Start () {
@@ -21,6 +21,7 @@ public class LevelCoordinator : MonoBehaviour {
 	}
 
 	public void RegisterKill(int team, GameObject enemy) {
+		Debug.Log(team);
 		enemy.GetComponent<EnemyFly>().Kill(team);
 		flyTallies[team].CatchFly();
 		if (flyTallies[team].completed)

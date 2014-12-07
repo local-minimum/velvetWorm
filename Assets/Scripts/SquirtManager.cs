@@ -40,11 +40,11 @@ public class SquirtManager : MonoBehaviour {
 	public GameObject self;
 	public Camera mainCamera;
 	private LevelCoordinator lvlCoord;
-	private PlayerMovement playerMovement;
+	private PlayerCoordinator playerCoord;
 
 	void Start() {
 		lvlCoord = GameObject.FindObjectOfType<LevelCoordinator>();
-		playerMovement = gameObject.GetComponentInParent<PlayerMovement>();
+		playerCoord = gameObject.GetComponentInParent<PlayerCoordinator>();
 
 		OnValidate();
 	}
@@ -115,12 +115,12 @@ public class SquirtManager : MonoBehaviour {
 				Vector3 newVelocity = Vector3.Reflect(v, hit.normal);
 				
 				//particleSystem.Emit(p.Position, newVelocity * 3.0f, 0.3f, 0.2f, Color.white);
-				
+//				Debug.Log(hit.collider.gameObject.tag);
 				if(hit.collider.gameObject.tag == "Player") {
 					//Todo: hitcode
 
 				} else if (hit.collider.gameObject.tag == "Enemy") {
-					lvlCoord.RegisterKill(playerMovement.playerID, hit.collider.gameObject);
+					lvlCoord.RegisterKill(p.Team, hit.collider.gameObject);
 
 				}
 			}

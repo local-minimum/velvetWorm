@@ -35,6 +35,7 @@ public class PlayerCannon : MonoBehaviour {
 	private float _flipYVal = -1f;
 
 	private SquirtManager squirter;
+	private PlayerCoordinator playerCoord;
 
 	public bool flipY {
 		get {
@@ -90,6 +91,7 @@ public class PlayerCannon : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		squirter = gameObject.GetComponentInChildren<SquirtManager>();
+		playerCoord = gameObject.GetComponentInParent<PlayerCoordinator>();
 		baseW = angle;
 		_rndWobblingX = 100f * Random.value;
 	}
@@ -150,14 +152,14 @@ public class PlayerCannon : MonoBehaviour {
 //		    particleSystem.Play();
 			_shooting = true;
 			squirt = new Squirt();
-			squirt.AddParticle(new SquirtParticle(transform.position, transform.right * squirtSpeed, 0));
+			squirt.AddParticle(new SquirtParticle(transform.position, transform.right * squirtSpeed, playerCoord.playerID));
 			squirter.AddSquirt(squirt);
 
 		} else if ((!still || !Input.GetButton("Fire1")) && _shooting) {
 //			particleSystem.Stop();
 			_shooting = false;
 		} else if (_shooting) {
-			squirt.AddParticle(new SquirtParticle(transform.position, transform.right * squirtSpeed, 0));
+			squirt.AddParticle(new SquirtParticle(transform.position, transform.right * squirtSpeed, playerCoord.playerID));
 
 		}
 	}

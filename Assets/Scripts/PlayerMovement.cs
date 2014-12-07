@@ -1,10 +1,7 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class PlayerMovement : MonoBehaviour {
-	private static int lastPlayer = -1;
-
-	private int _playerID;
 
 	public bool inputSegment = false;
 	public PlayerSegment mySegment;
@@ -21,17 +18,8 @@ public class PlayerMovement : MonoBehaviour {
 	private Vector2 playerNormal;
 	private Vector2 surfaceNormal;
 
-	public int playerID {
-
-		get {
-			return _playerID;
-		}
-	}
-
 	// Use this for initialization
 	void Start () {
-		lastPlayer++;
-		_playerID = lastPlayer;
 
 		mySegment = gameObject.GetComponent<PlayerSegment>();
 		playerNormal = transform.up;
