@@ -128,27 +128,6 @@ public class PlayerCannon : MonoBehaviour {
 					StartCoroutine(Energize());
 		}
 
-		/*
-
-		if (headRB.velocity.sqrMagnitude < stillSpeedSq && !headMovement.wantingToMove && (Time.timeSinceLevelLoad - lastSlime) >  ) {
-			if (still) {
-				float w = angle + Input.GetAxis("Vertical") * rotationSpeed * _flipYVal;
-				if (_shooting) {
-					_rndWobblingY += shootingWobblingF * Time.deltaTime;
-					w += shootingWobbling * (Mathf.PerlinNoise(_rndWobblingX, _rndWobblingY) - perlinMean);
-				}
-				angle = ClampRotation(w, -flexAngle, flexAngle, baseW); 
-//				angle = Mathf.Clamp(angle, baseW - flexAngle, baseW + flexAngle);
-	
-			} else {
-				if (!stillTransition)
-					StartCoroutine(Energize());
-			}
-		} else {
-			if (!stillTransition && still)
-				StartCoroutine(Deenergize());
-		}*/
-
 	}
 
 	float ClampRotation(float angle, float minAngle, float maxAngle, float clampAroundAngle = 0)
