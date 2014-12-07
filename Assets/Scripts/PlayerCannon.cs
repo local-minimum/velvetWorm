@@ -34,7 +34,6 @@ public class PlayerCannon : MonoBehaviour {
 	[HideInInspector]
 	private float _flipYVal = -1f;
 
-	private SquirtManager squirter;
 	private PlayerCoordinator playerCoord;
 
 	public bool flipY {
@@ -64,9 +63,6 @@ public class PlayerCannon : MonoBehaviour {
 	private bool _shooting = false;
 	private float perlinMean = 0.4652489f;
 	private float baseW;
-	private Squirt squirt;
-	public float squirtSpeed = 1f;
-	public float squirtDists = 1f;
 
 	[Range(0f, 10f)]
 	public float maxSlimingTime = 2f;
@@ -88,10 +84,7 @@ public class PlayerCannon : MonoBehaviour {
 		}
 		
 		set {
-//
-//			while (Mathf.Abs(value) > 360)
-//				value -= Mathf.Sign(value) * 360;
-//			
+
 			transform.localRotation = Quaternion.AngleAxis(WrapAngle(value), Vector3.forward);
 			
 		}
@@ -99,7 +92,7 @@ public class PlayerCannon : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		squirter = gameObject.GetComponentInChildren<SquirtManager>();
+
 		playerCoord = gameObject.GetComponentInParent<PlayerCoordinator>();
 		baseW = angle;
 		_rndWobblingX = 100f * Random.value;
@@ -162,11 +155,9 @@ public class PlayerCannon : MonoBehaviour {
 		if (still && Input.GetButton("Fire1") && !_shooting &&  (Time.timeSinceLevelLoad - lastSlime > slimeBetweenTime)) {
 //		    particleSystem.Play();
 			_shooting = true;
-			squirt = new Squirt();
-			squirter.AddSquirt(squirt);
-			AddSquirts();
+
 		} else if (_shooting && (Time.timeSinceLevelLoad - lastSlime < maxSlimingTime ) && Input.GetButton("Fire1")  ) {
-			AddSquirts();
+
 		
 		} else if (_shooting) {
 //			particleSystem.Stop();
@@ -174,16 +165,7 @@ public class PlayerCannon : MonoBehaviour {
 			lastSlime = Time.timeSinceLevelLoad;
 		}
 	}
-
-	void AddSquirts() {
-		Vector3 f = transform.right * Time.deltaTime * squirtDists;
-		Vector3 fs = transform.right * squirtSpeed;
-		squirt.AddParticle(new SquirtParticle(transform.position, fs , playerCoord.playerID));
-		squirt.AddParticle(new SquirtParticle(transform.position - 0.25f * f, fs, playerCoord.playerID));
-		squirt.AddParticle(new SquirtParticle(transform.position - 0.5f * f, fs, playerCoord.playerID));
-		squirt.AddParticle(new SquirtParticle(transform.position - 0.75f * f, fs, playerCoord.playerID));
-
-	}
+	
 
 	IEnumerator<WaitForSeconds> Energize() {
 		stillTransition = true;

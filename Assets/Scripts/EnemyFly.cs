@@ -113,7 +113,7 @@ public class EnemyFly : MonoBehaviour {
 
 
 			dist *= (dist * (flyTime / 20));
-			Debug.Log(dist);
+//			Debug.Log(dist);
 
 			yield return new WaitForSeconds(Random.Range(0.8f*dist, 2.0f+dist));
 		}

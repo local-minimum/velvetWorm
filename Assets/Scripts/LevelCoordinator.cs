@@ -8,7 +8,7 @@ public class LevelCoordinator : MonoBehaviour {
 	public GameObject[] enemyPrefabs;
 
 	private Dictionary<int, FlyTally> flyTallies = new Dictionary<int, FlyTally>();
-	private List<PlayerCoordinator> players = new List<PlayerCoordinator>();
+	public List<PlayerCoordinator> players = new List<PlayerCoordinator>();
 
 	public GameObject[] FlyTallyPrefabs;
 	public Canvas uiCanvas;
@@ -34,7 +34,7 @@ public class LevelCoordinator : MonoBehaviour {
 		if (!uiCanvas)
 			uiCanvas = GameObject.FindObjectOfType<Canvas>();
 
-		players.AddRange(GameObject.FindObjectsOfType<PlayerCoordinator>());
+//		players.AddRange(GameObject.FindObjectsOfType<PlayerCoordinator>());
 		setupTallies();
 
 		for (int i=0; i<startingEnemies; i++)
@@ -66,11 +66,15 @@ public class LevelCoordinator : MonoBehaviour {
 
 			flyTallies[k].transform.SetParent(uiCanvas.transform, false);
 		}
+
+//		Debug.Log(players[0].playerID);
 	}
 
-	public void RegisterKill(int team, GameObject enemyGO) {
+	public void RegisterKill(int team, EnemyFly enemy) {
+		Debug.Log(team);
+		if (team < 0) 
+			team = players[0].playerID;
 
-		EnemyFly enemy = enemyGO.GetComponent<EnemyFly>();
 		enemy.Slime();
 		if (enemy.isAlive) {
 			enemy.Kill(team);
