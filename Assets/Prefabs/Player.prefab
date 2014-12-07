@@ -718,8 +718,8 @@ MonoBehaviour:
   layers:
     serializedVersion: 2
     m_Bits: 1792
-  material: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
-  ends: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  material: {fileID: 2100000, guid: 36eb14614e422204494515cbffd029fd, type: 2}
+  ends: {fileID: 2100000, guid: 36eb14614e422204494515cbffd029fd, type: 2}
   Width: .100000001
   Gravity: .0500000007
   BreakingDistanceSquared: 100000

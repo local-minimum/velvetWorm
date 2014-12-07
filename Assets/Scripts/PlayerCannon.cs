@@ -66,7 +66,7 @@ public class PlayerCannon : MonoBehaviour {
 	private float baseW;
 	private Squirt squirt;
 	public float squirtSpeed = 1f;
-
+	public float squirtDists =1f;
 	public bool ready {
 		get {
 			return still;
@@ -152,16 +152,25 @@ public class PlayerCannon : MonoBehaviour {
 //		    particleSystem.Play();
 			_shooting = true;
 			squirt = new Squirt();
-			squirt.AddParticle(new SquirtParticle(transform.position, transform.right * squirtSpeed, playerCoord.playerID));
 			squirter.AddSquirt(squirt);
+			AddSquirts();
 
 		} else if ((!still || !Input.GetButton("Fire1")) && _shooting) {
 //			particleSystem.Stop();
 			_shooting = false;
 		} else if (_shooting) {
-			squirt.AddParticle(new SquirtParticle(transform.position, transform.right * squirtSpeed, playerCoord.playerID));
-
+			AddSquirts();
 		}
+	}
+
+	void AddSquirts() {
+		Vector3 f = transform.right * Time.deltaTime * squirtDists;
+		Vector3 fs = transform.right * squirtSpeed;
+		squirt.AddParticle(new SquirtParticle(transform.position, fs , playerCoord.playerID));
+		squirt.AddParticle(new SquirtParticle(transform.position - 0.25f * f, fs, playerCoord.playerID));
+		squirt.AddParticle(new SquirtParticle(transform.position - 0.5f * f, fs, playerCoord.playerID));
+		squirt.AddParticle(new SquirtParticle(transform.position - 0.75f * f, fs, playerCoord.playerID));
+
 	}
 
 	IEnumerator<WaitForSeconds> Energize() {

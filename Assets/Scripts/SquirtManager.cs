@@ -56,38 +56,7 @@ public class SquirtManager : MonoBehaviour {
 	public void AddSquirt(Squirt s) {
 		Squirts.Add(s);
 	}
-
-	/*
-	public Squirt AddParticle(Squirt lastSquirt, SquirtParticle p) {
-		if(lastSquirt != null) {
-			while(lastSquirt.NextSquirt != null)
-				lastSquirt = lastSquirt.NextSquirt;
-		}
-		
-		bool newSquirt = false;
-
-		if(lastSquirt == null || !lastSquirt.Alive)
-			newSquirt = true;
-		else {
-			int i = lastSquirt.Particles.Count;
-			if(i > 0 && (lastSquirt.Particles[i - 1].Position - p.Position).sqrMagnitude > BreakingDistanceSquared)
-				newSquirt = true;
-			else
-				newSquirt = false;
-		}
-		
-		if(newSquirt) {
-			// add to a new squrt
-			Squirt newS = new Squirt();
-			AddSquirt(newS);
-			newS.AddParticle(p);
-			return newS;
-		} else {
-			lastSquirt.AddParticle(p);
-			return lastSquirt;
-		}
-	}
-	*/
+	
 
 	void UpdateSquirt(float grav, float delta, Squirt s, ref Stack<Squirt> squirtsToAdd) {
 		List<SquirtParticle> partsToDelete = null;
