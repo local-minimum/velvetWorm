@@ -68,7 +68,9 @@ public class EnemyFly : MonoBehaviour {
 
 		while (isAlive)
 		{
-			// give new point / transform
+			int index = Random.Range(0,points.Length-1);
+			pnt_x = Mathf.FloorToInt(points[index].position.x);
+			pnt_y = Mathf.FloorToInt(points[index].position.y);
 			yield return new WaitForSeconds(Random.Range(1.0f,5.0f));
 		}
 	}
