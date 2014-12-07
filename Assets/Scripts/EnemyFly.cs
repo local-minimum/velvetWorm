@@ -4,7 +4,6 @@ using System.Linq;
 
 public class EnemyFly : MonoBehaviour {
 
-
 	[Range(0, 50f)]
 	public float deadDropGravity;
 
@@ -32,6 +31,8 @@ public class EnemyFly : MonoBehaviour {
 
 	private bool _isAlive = true;
 
+	private ParticleSystem selfSlimer;
+
 	public bool isAlive {
 		get {
 			return _isAlive;
@@ -42,6 +43,7 @@ public class EnemyFly : MonoBehaviour {
 	// Use this for initialization
 	public void Start ()
 	{
+		selfSlimer = gameObject.GetComponent<ParticleSystem>();
 		points = GameObject.FindGameObjectsWithTag("FlyTag").Select(e => e.transform).ToArray();
 		transform.position = points[Random.Range(0, points.Count() - 1)].position;
 		StartCoroutine(pointSwitcher());
@@ -94,6 +96,10 @@ public class EnemyFly : MonoBehaviour {
 		rigidbody2D.gravityScale = deadDropGravity;
 		gameObject.layer = LayerMask.NameToLayer("Food");
 
+	}
+
+	public void Slime() {
+		selfSlimer.Emit(10);
 	}
 
 	IEnumerator<WaitForSeconds> pointSwitcher()

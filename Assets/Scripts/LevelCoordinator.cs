@@ -48,6 +48,7 @@ public class LevelCoordinator : MonoBehaviour {
 	public void RegisterKill(int team, GameObject enemyGO) {
 
 		EnemyFly enemy = enemyGO.GetComponent<EnemyFly>();
+		enemy.Slime();
 		if (enemy.isAlive) {
 			enemy.Kill(team);
 			flyTallies[team].CatchFly();
