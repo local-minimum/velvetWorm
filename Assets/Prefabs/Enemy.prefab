@@ -14,7 +14,7 @@ GameObject:
   - 58: {fileID: 5800000}
   m_Layer: 10
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -70,11 +70,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseSpeed: 3
   dir_change: .349999994
+  point_focus: 0
   points: []
-  pnt_x: 0
-  pnt_y: 0
-  pnt_x_dist: 0
-  pnt_y_dist: 0
   isAlive: 1
 --- !u!212 &21200000
 SpriteRenderer:
