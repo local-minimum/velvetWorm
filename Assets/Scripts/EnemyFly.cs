@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 public class EnemyFly : MonoBehaviour {
 
@@ -12,17 +13,21 @@ public class EnemyFly : MonoBehaviour {
 	public float dir_change;
 
 
+	public Transform[] points;
 
 	public int pnt_x;
 	public int pnt_y;
 	public int pnt_x_dist;
 	public int pnt_y_dist;
 
+	public bool isAlive = true;
+
 
 	// Use this for initialization
 	public void Start ()
 	{
-
+		points = GameObject.FindGameObjectsWithTag("FlyTag").Select(e => e.transform).ToArray();
+		StartCoroutine(pointSwitcher());
 	}
 
 
@@ -30,18 +35,11 @@ public class EnemyFly : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
-
-
 		Vector2 newDir = new Vector2(Random.value*2 - 1, Random.value*2 - 1 );
-
 
 		newDir = newDir*dir_change + rigidbody2D.velocity * (1.0f - dir_change);
 
-
 		rigidbody2D.velocity = Vector2.ClampMagnitude(newDir * 1.5f, baseSpeed);
-
-//			Vector2.ClampMagnitude(rigidbody2D.velocity, baseSpeed);
-//		rigidbody2D.AddForce( newDir, ForceMode2D.Force);
 
 		if (transform.localPosition.x > (pnt_x + pnt_x_dist))
 		{
@@ -63,14 +61,15 @@ public class EnemyFly : MonoBehaviour {
 			rigidbody2D.AddForce(baseSpeed*Vector2.up,ForceMode2D.Force);
 			
 		}
-
-//		transform.localPosition.x += Mathf.PerlinNoise(-1,1);
-//		transform.localPosition.y += Mathf.PerlinNoise(-1,1);
-
-//		transform.localPosition = new Vector3(transform.localPosition.x + Mathf.PerlinNoise(-1,1),
-//		                                      transform.localPosition.y + Mathf.PerlinNoise(-1,1),
-//		                                      transform.localPosition.z);
 	}
 
+	IEnumerator<WaitForSeconds> pointSwitcher()
+	{
 
+		while (isAlive)
+		{
+			// give new point / transform
+			yield return new WaitForSeconds(Random.Range(1.0f,5.0f));
+		}
+	}
 }
