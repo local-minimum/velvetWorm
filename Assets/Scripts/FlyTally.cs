@@ -13,8 +13,8 @@ public class FlyTally : MonoBehaviour {
 	public Color deadFly;
 
 	private int caugthFlies = 0;
+	private LevelCoordinator lvlCoord;
 
-	private float lastKill;
 
 	public bool completed {
 		get {
@@ -30,6 +30,8 @@ public class FlyTally : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		lvlCoord = GameObject.FindObjectOfType<LevelCoordinator>();
+
 		Reset();
 	}
 	
@@ -61,9 +63,10 @@ public class FlyTally : MonoBehaviour {
 	}
 
 	void SetCurrentFlyTime() {
-		flyTimes[caugthFlies] = Time.timeSinceLevelLoad - lastKill;
+		flyTimes[caugthFlies] = Time.timeSinceLevelLoad - lvlCoord.enemyClock;
 		flyClocks[caugthFlies].text = TimeToString(flyTimes[caugthFlies]);
 	}
+
 
 	public void CatchFly () {
 		if (caugthFlies  >= flies.Length)
@@ -74,7 +77,6 @@ public class FlyTally : MonoBehaviour {
 		UnityEngine.UI.Image im = flies[caugthFlies].GetComponent<UnityEngine.UI.Image>();
 		im.color = deadFly;
 		caugthFlies ++;
-		lastKill = Time.timeSinceLevelLoad;
 	}
 
 	void Reset() {
@@ -91,6 +93,5 @@ public class FlyTally : MonoBehaviour {
 			flyClocks[i].text = "0:00";
 		}
 
-		lastKill = Time.timeSinceLevelLoad;
 	}
 }

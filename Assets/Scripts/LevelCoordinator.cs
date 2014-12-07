@@ -15,6 +15,9 @@ public class LevelCoordinator : MonoBehaviour {
 	public UnityEngine.UI.Text recordTime;
 
 	public string lvlName;
+	
+	private float lastKill;
+	private bool noSpawn;
 
 	private string recordTimeKey {
 		get {
@@ -28,6 +31,12 @@ public class LevelCoordinator : MonoBehaviour {
 		}
 	}
 
+	public float enemyClock {
+		get {
+			return noSpawn ? Time.timeSinceLevelLoad : lastKill;
+		}
+	}
+
 	// Use this for initialization
 	void Start () {
 
@@ -38,7 +47,7 @@ public class LevelCoordinator : MonoBehaviour {
 		setupTallies();
 
 		for (int i=0; i<startingEnemies; i++)
-			SpawnEnemy();
+			StartCoroutine( SpawnEnemy(Random.Range(1f, 3f)));
 
 
 		recordTime.text = string.Format("Best Time: {0}", 
@@ -69,6 +78,9 @@ public class LevelCoordinator : MonoBehaviour {
 
 //		Debug.Log(players[0].playerID);
 	}
+	private void SetSpawnTime() {
+		lastKill = Time.timeSinceLevelLoad;
+	}
 
 	public void RegisterKill(int team, EnemyFly enemy) {
 		Debug.Log(team);
@@ -82,7 +94,7 @@ public class LevelCoordinator : MonoBehaviour {
 			if (flyTallies[team].completed)
 				LevelWon(team);
 			else
-				SpawnEnemy();
+				StartCoroutine( SpawnEnemy(Random.Range(1f, 3f)));
 		}
 	}
 
@@ -95,12 +107,20 @@ public class LevelCoordinator : MonoBehaviour {
 //		Application.LoadLevel(Application.loadedLevel);
 	}
 
-	private void SpawnEnemy() {
-		SpawnEnemy(Random.Range(0, enemyPrefabs.Length - 1));
+	IEnumerator<WaitForSeconds> SpawnEnemy(float delay) {
+		noSpawn = true;
+		yield return new WaitForSeconds(delay);
+		Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length - 1)]);
+		SetSpawnTime();
+		noSpawn = false;
 	}
 
-	private void SpawnEnemy(int idX) {
+	IEnumerator<WaitForSeconds> SpawnEnemy(int idX, float delay) {
+		noSpawn = true;
+		yield return new WaitForSeconds(delay);
 		Instantiate(enemyPrefabs[idX]);
+		SetSpawnTime();
+		noSpawn = false;
 	}
 	
 }
