@@ -67,6 +67,12 @@ public class EnemyFly : MonoBehaviour {
 		}
 	}
 
+	public void Kill(int player)
+	{
+		isAlive = false;
+
+	}
+
 	IEnumerator<WaitForSeconds> pointSwitcher()
 	{
 		while (isAlive)
