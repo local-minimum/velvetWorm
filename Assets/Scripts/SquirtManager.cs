@@ -39,8 +39,12 @@ public class SquirtManager : MonoBehaviour {
 	public ParticleSystem particleSystem;
 	public GameObject self;
 	public Camera mainCamera;
+	private LevelCoordinator lvlCoord;
+	private PlayerMovement playerMovement;
 
 	void Start() {
+		lvlCoord = GameObject.FindObjectOfType<LevelCoordinator>();
+		playerMovement = gameObject.GetComponentInParent<PlayerMovement>();
 
 		OnValidate();
 	}
@@ -116,7 +120,8 @@ public class SquirtManager : MonoBehaviour {
 					//Todo: hitcode
 
 				} else if (hit.collider.gameObject.tag == "Enemy") {
-					hit.collider.gameObject.GetComponent<EnemyFly>().Kill(p.Team);
+					lvlCoord.RegisterKill(playerMovement.playerID, hit.collider.gameObject);
+
 				}
 			}
 			//}

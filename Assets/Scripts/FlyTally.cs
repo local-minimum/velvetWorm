@@ -10,6 +10,12 @@ public class FlyTally : MonoBehaviour {
 
 	private int caugthFlies = 0;
 
+	public bool completed {
+		get {
+			return caugthFlies == flies.Length;
+		}
+	}
+
 	// Use this for initialization
 	void Start () {
 		Reset();
@@ -20,7 +26,7 @@ public class FlyTally : MonoBehaviour {
 	
 	}
 
-	void CatchFly () {
+	public void CatchFly () {
 		if (caugthFlies  >= flies.Length)
 			return;
 
