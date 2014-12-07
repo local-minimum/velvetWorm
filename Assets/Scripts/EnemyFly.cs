@@ -15,10 +15,13 @@ public class EnemyFly : MonoBehaviour {
 	[Range(1,3)]
 	public float point_focus;
 
+	[Range(1,10)]
+	public float flyTime;
+
 	public Transform[] points;
 
-	private int pnt_x;
-	private int pnt_y;
+	public float pnt_x;
+	public float pnt_y;
 	private int pnt_x_dist;
 	private int pnt_y_dist;
 
@@ -78,9 +81,15 @@ public class EnemyFly : MonoBehaviour {
 		while (isAlive)
 		{
 			int index = Random.Range(0,points.Length-1);
-			pnt_x = Mathf.FloorToInt(points[index].position.x);
-			pnt_y = Mathf.FloorToInt(points[index].position.y);
-			yield return new WaitForSeconds(Random.Range(1.0f,5.0f));
+			pnt_x = points[index].position.x;
+			pnt_y = points[index].position.y;
+			float dist = (transform.position - points[index].position).magnitude;
+
+
+			dist *= (dist * (flyTime / 20));
+			Debug.Log(dist);
+
+			yield return new WaitForSeconds(Random.Range(0.8f*dist, 2.0f+dist));
 		}
 	}
 }
