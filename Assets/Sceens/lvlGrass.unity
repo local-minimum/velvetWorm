@@ -1001,6 +1001,10 @@ Prefab:
       propertyPath: point_focus
       value: 1.55999994
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 078b5519fc9e104408fbaae4dfcb2da3, type: 2}
+      propertyPath: flyTime
+      value: 3.0999999
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 078b5519fc9e104408fbaae4dfcb2da3, type: 2}
   m_RootGameObject: {fileID: 1633158841}
@@ -1604,7 +1608,10 @@ MonoBehaviour:
   baseSpeed: 2.0999999
   dir_change: .349999994
   point_focus: 1.55999994
+  flyTime: 3.0999999
   points: []
+  pnt_x: 0
+  pnt_y: 0
   isAlive: 1
 --- !u!212 &1633158844
 SpriteRenderer:
