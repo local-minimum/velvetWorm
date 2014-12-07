@@ -1,11 +1,8 @@
 fileFormatVersion: 2
-guid: c63f3a8b20cf6ea4a816aca33da569ae
+guid: af82e337d5a3a3a48a4329e75073898f
 TextureImporter:
   fileIDToRecycleName:
-    21300000: leg
-    21300002: leg_0
-    21300004: leg_1
-    21300006: leg_2
+    21300000: level
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -29,13 +26,13 @@ TextureImporter:
   maxTextureSize: 1024
   textureSettings:
     filterMode: -1
-    aniso: 1
+    aniso: -1
     mipBias: -1
-    wrapMode: 1
+    wrapMode: -1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -46,36 +43,6 @@ TextureImporter:
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites:
-    - name: leg_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 20
-        height: 24
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: leg_1
-      rect:
-        serializedVersion: 2
-        x: 22
-        y: 0
-        width: 20
-        height: 24
-      alignment: 0
-      pivot: {x: .5, y: .5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: leg_2
-      rect:
-        serializedVersion: 2
-        x: 44
-        y: 0
-        width: 20
-        height: 24
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+    sprites: []
   spritePackingTag: 
   userData: 

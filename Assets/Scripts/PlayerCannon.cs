@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 public class PlayerCannon : MonoBehaviour {
+	
 
 	[Range(0f, 45f)]
 	public float flexAngle = 0.5f;
@@ -32,7 +33,9 @@ public class PlayerCannon : MonoBehaviour {
 	[SerializeField]
 	[HideInInspector]
 	private float _flipYVal = -1f;
-	
+
+	private SquirtManager squirter;
+
 	public bool flipY {
 		get {
 			return _flipY;
@@ -60,6 +63,8 @@ public class PlayerCannon : MonoBehaviour {
 	private bool _shooting = false;
 	private float perlinMean = 0.4652489f;
 	private float baseW;
+	private Squirt squirt;
+	public float squirtSpeed = 1f;
 
 	public bool ready {
 		get {
@@ -84,6 +89,7 @@ public class PlayerCannon : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		squirter = gameObject.GetComponentInChildren<SquirtManager>();
 		baseW = angle;
 		_rndWobblingX = 100f * Random.value;
 	}
@@ -143,9 +149,16 @@ public class PlayerCannon : MonoBehaviour {
 		if (still && Input.GetButton("Fire1") && !_shooting) {
 //		    particleSystem.Play();
 			_shooting = true;
+			squirt = new Squirt();
+			squirt.AddParticle(new SquirtParticle(transform.position, transform.right * squirtSpeed, 0));
+			squirter.AddSquirt(squirt);
+
 		} else if ((!still || !Input.GetButton("Fire1")) && _shooting) {
 //			particleSystem.Stop();
 			_shooting = false;
+		} else if (_shooting) {
+			squirt.AddParticle(new SquirtParticle(transform.position, transform.right * squirtSpeed, 0));
+
 		}
 	}
 

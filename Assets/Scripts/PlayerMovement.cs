@@ -39,7 +39,8 @@ public class PlayerMovement : MonoBehaviour {
 
 			if (hugSurface) {
 				Vector2 v = new Vector2 (transform.position.x, transform.position.y);
-				
+				if (wantingToMove) 
+					TestFlip(d);
 				// Try to detect a surface normal, otherwise up
 				RaycastHit2D hit = Physics2D.Raycast (transform.position, -playerNormal, rayMaxDistance, layerMask);
 				if (hit.collider != null) {
@@ -53,10 +54,19 @@ public class PlayerMovement : MonoBehaviour {
 				playerNormal = Vector2.Lerp (playerNormal, surfaceNormal, smoothTurn * Time.deltaTime);
 				transform.up = playerNormal;
 				
-				if (wantingToMove)
+				if (wantingToMove) 
 					rigidbody2D.velocity = transform.right * Time.deltaTime * speed * d;
+				
 			}
 
 		
+	}
+
+	void TestFlip(float d) {
+		if (Mathf.Sign(d) != Mathf.Sign(transform.localScale.x)) {
+			Vector3 s = transform.localScale;
+			s.x *= -1f;
+			transform.localScale = s;
+		}
 	}
 }
