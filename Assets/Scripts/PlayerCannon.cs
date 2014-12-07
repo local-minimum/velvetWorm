@@ -35,6 +35,7 @@ public class PlayerCannon : MonoBehaviour {
 	private float _flipYVal = -1f;
 
 	private PlayerCoordinator playerCoord;
+	public ParticleSystem slimer;
 
 	public bool flipY {
 		get {
@@ -153,14 +154,14 @@ public class PlayerCannon : MonoBehaviour {
 	void FixedUpdate() {
 //		Debug.Log(string.Format("{0} {1} {2}", still, Input.GetButton("Fire1"), slimeEmitter.isPaused));
 		if (still && Input.GetButton("Fire1") && !_shooting &&  (Time.timeSinceLevelLoad - lastSlime > slimeBetweenTime)) {
-//		    particleSystem.Play();
+		    slimer.Play();
 			_shooting = true;
 
 		} else if (_shooting && (Time.timeSinceLevelLoad - lastSlime < maxSlimingTime ) && Input.GetButton("Fire1")  ) {
 
 		
 		} else if (_shooting) {
-//			particleSystem.Stop();
+			slimer.Stop();
 			_shooting = false;
 			lastSlime = Time.timeSinceLevelLoad;
 		}

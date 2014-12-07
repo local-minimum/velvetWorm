@@ -697,13 +697,12 @@ MonoBehaviour:
   headMovement: {fileID: 11400022}
   _flipY: 0
   _flipYVal: -1
+  slimer: {fileID: 19800000}
   cannonArm: {fileID: 11400020}
   rotationArmActivated: 30
   armActivationTime: .5
   headRB: {fileID: 5000010}
   stillSpeedSq: .075000003
-  squirtSpeed: .00999999978
-  squirtDists: 1
   maxSlimingTime: 2
   slimeBetweenTime: .5
 --- !u!114 &11400020
@@ -805,7 +804,7 @@ ParticleSystem:
   randomSeed: 0
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   moveWithTransform: 0
   InitialModule:
     enabled: 1
