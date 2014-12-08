@@ -19,6 +19,6 @@ public class EnemySquirtHit : MonoBehaviour {
 
 	void OnParticleCollision(GameObject other) {
 		lvlCoord.RegisterKill(-1, enemyController);
-
+		audio.Play();
 	}
 }
