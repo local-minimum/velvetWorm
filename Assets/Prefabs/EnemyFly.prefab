@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deadDropGravity: 1
-  deadTorque: 0
+  deadTorque: 14
   baseSpeed: 3
   dir_change: .349999994
   point_focus: 1.60000002

@@ -109,13 +109,13 @@ public class PlayerCannon : MonoBehaviour {
 		} else if (_shooting) {
 			_rndWobblingY += shootingWobblingF * Time.deltaTime;
 			
-			angle = ClampRotation(angle + shootingWobbling * (Mathf.PerlinNoise(_rndWobblingX, _rndWobblingY) - perlinMean),
+			angle = ClampRotation(angle + shootingWobbling * (Mathf.PerlinNoise(_rndWobblingX, _rndWobblingY) - perlinMean) + Input.GetAxis("Vertical") * rotationSpeed * _flipYVal,
 			                      -flexAngle, flexAngle, baseW); 
 
 		} else if (still) {
 
-				angle = ClampRotation(angle + Input.GetAxis("Vertical") * rotationSpeed * _flipYVal, 
-				                      -flexAngle, flexAngle, baseW); 
+			angle = ClampRotation(angle + Input.GetAxis("Vertical") * rotationSpeed * _flipYVal, 
+			                      -flexAngle, flexAngle, baseW); 
 
 		} else if (!headMovement.wantingToMove) {
 
