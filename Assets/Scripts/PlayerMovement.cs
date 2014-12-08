@@ -22,15 +22,26 @@ public class PlayerMovement : MonoBehaviour {
 	private bool originalDirection = true;
 	private Vector3 originalScale;
 	private Vector3 reflectedScale;
+	private Quaternion slimeOriginalRotation;
+	private Quaternion slimeReverseRotation;
 
+	public bool playerDirection {
+		get {
+			return originalDirection;
+		}
+	}
 
 	// Use this for initialization
 	void Start () {
 		originalScale = transform.localScale;
 		reflectedScale = originalScale;
 		reflectedScale.x *= -1f;
-
 		mySegment = gameObject.GetComponent<PlayerSegment>();
+
+//		slimeOriginalRotation = mySegment.cannon.slimer.transform.localRotation;
+//		slimeReverseRotation = Quaternion.Euler(-90f, 90f, 180f) * slimeOriginalRotation;
+//		slimerReverseScale.x *= -1;
+
 		playerNormal = transform.up;
 	}
 
@@ -69,6 +80,8 @@ public class PlayerMovement : MonoBehaviour {
 		if (Input.GetButtonDown("Flip")) {
 			originalDirection = !originalDirection;
 			transform.localScale = originalDirection ? originalScale : reflectedScale;
+//			mySegment.cannon.transform.localScale = originalDirection ? originalScale : reflectedScale;
+//			mySegment.cannon.slimer.transform.localRotation = originalDirection ? slimeOriginalRotation : slimeReverseRotation;
 		}
 
 		if (hugSurface) {
@@ -105,10 +118,11 @@ public class PlayerMovement : MonoBehaviour {
 	
 	}
 
+	/*
 	void TestFlip(float d) {
 		if ((Mathf.Sign(d) < 0f) == originalDirection) {
 			originalDirection = !originalDirection;
 		}
 
-	}
+	}*/
 }

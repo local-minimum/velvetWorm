@@ -36,6 +36,7 @@ public class PlayerCannon : MonoBehaviour {
 
 	private PlayerCoordinator playerCoord;
 	public ParticleSystem slimer;
+	public bool isDefaultDirection = true;
 
 	public bool flipY {
 		get {
@@ -44,7 +45,7 @@ public class PlayerCannon : MonoBehaviour {
 
 		set {
 			_flipY = value;
-			_flipYVal = _flipY ? -1f : 1f;
+			_flipYVal = _flipY ? 1f : -1f;
 		}
 	}
 
@@ -81,13 +82,18 @@ public class PlayerCannon : MonoBehaviour {
 
 	public float angle {
 		get {
-			return transform.localEulerAngles.z ;
+			if (isDefaultDirection)
+				return transform.localEulerAngles.z ;
+			else
+				return transform.localEulerAngles.z * -1f;
 		}
 		
 		set {
+			if (isDefaultDirection)
+				transform.localRotation = Quaternion.AngleAxis(WrapAngle(value), Vector3.forward);
+			else
+				transform.localRotation = Quaternion.AngleAxis(WrapAngle(value), Vector3.forward * -1f);
 
-			transform.localRotation = Quaternion.AngleAxis(WrapAngle(value), Vector3.forward);
-			
 		}
 	}
 
@@ -95,7 +101,8 @@ public class PlayerCannon : MonoBehaviour {
 	void Start () {
 
 		playerCoord = gameObject.GetComponentInParent<PlayerCoordinator>();
-		baseW = angle;
+
+			baseW = angle;
 		_rndWobblingX = 100f * Random.value;
 	}
 	
@@ -154,7 +161,9 @@ public class PlayerCannon : MonoBehaviour {
 	void FixedUpdate() {
 //		Debug.Log(string.Format("{0} {1} {2}", still, Input.GetButton("Fire1"), slimeEmitter.isPaused));
 		if (still && Input.GetButton("Fire1") && !_shooting &&  (Time.timeSinceLevelLoad - lastSlime > slimeBetweenTime)) {
-		    slimer.Play();
+		    if (playerCoord.playerMovementActive.playerDirection == isDefaultDirection)
+				slimer.Play();
+
 			_shooting = true;
 
 		} else if (_shooting && (Time.timeSinceLevelLoad - lastSlime < maxSlimingTime ) && Input.GetButton("Fire1")  ) {
@@ -162,6 +171,7 @@ public class PlayerCannon : MonoBehaviour {
 		
 		} else if (_shooting) {
 			slimer.Stop();
+
 			_shooting = false;
 			lastSlime = Time.timeSinceLevelLoad;
 		}
