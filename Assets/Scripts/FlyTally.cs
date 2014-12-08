@@ -86,7 +86,7 @@ public class FlyTally : MonoBehaviour {
 
 	public void Reset() {
 		gameObject.SetActive(true);
-//		Debug.Log(flies.Length);
+		Debug.Log("Resetting tally");
 		flyClocks = new UnityEngine.UI.Text[flies.Length];
 		flyTimes = new float[flies.Length];
 //		Debug.Log("X");
@@ -99,6 +99,7 @@ public class FlyTally : MonoBehaviour {
 //			Debug.Log("--");
 			flyClocks[i].text = "0:00";
 		}
+		caugthFlies = 0;
 
 	}
 }

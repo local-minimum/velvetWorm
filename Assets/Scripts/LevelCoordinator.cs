@@ -170,11 +170,9 @@ public class LevelCoordinator : MonoBehaviour {
 	}
 
 	public void Reset() {
-		if (noSpawn)
-			return;
 
 		EnemyFly[] efs = GameObject.FindObjectsOfType<EnemyFly>();
-
+		Debug.Log(string.Format("{0} dead flies to clean up", efs.Length));
 		foreach (EnemyFly ef in efs) {
 			if (ef && ef.gameObject) {
 				Destroy(ef.gameObject);
