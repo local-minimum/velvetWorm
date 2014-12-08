@@ -59,6 +59,11 @@ public class FlyTally : MonoBehaviour {
 			mS = 0;
 		}
 
+		if (s > 999) {
+			s = 999f;
+			mS = 99;
+		}
+
 		return string.Format("{0}:{1:00}", (int) s, mS);
 	}
 
@@ -80,18 +85,21 @@ public class FlyTally : MonoBehaviour {
 	}
 
 	public void Reset() {
-
+		gameObject.SetActive(true);
+		Debug.Log("Resetting tally");
 		flyClocks = new UnityEngine.UI.Text[flies.Length];
 		flyTimes = new float[flies.Length];
-
+//		Debug.Log("X");
 		for (int i=0; i<flies.Length;i++) {
 			UnityEngine.UI.Image im = flies[i].GetComponent<UnityEngine.UI.Image>();
 			im.color = aliveFly;
-			//add shake?
+//			Debug.Log(i);
 
 			flyClocks[i] = flies[i].GetComponentInChildren<UnityEngine.UI.Text>();
+//			Debug.Log("--");
 			flyClocks[i].text = "0:00";
 		}
+		caugthFlies = 0;
 
 	}
 }
