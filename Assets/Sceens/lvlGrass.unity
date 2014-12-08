@@ -238,7 +238,7 @@ MonoBehaviour:
   playerNormalGravity: 90
   turnSpeed: 90
   smoothTurn: .300000012
-  rayMaxDistance: 2
+  rayMaxDistance: .300000012
 --- !u!212 &153555721
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -739,7 +739,7 @@ MonoBehaviour:
   playerNormalGravity: 90
   turnSpeed: 90
   smoothTurn: .300000012
-  rayMaxDistance: 2
+  rayMaxDistance: .300000012
 --- !u!212 &408285711
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -967,7 +967,7 @@ MonoBehaviour:
   playerNormalGravity: 90
   turnSpeed: 90
   smoothTurn: .300000012
-  rayMaxDistance: 2
+  rayMaxDistance: .300000012
 --- !u!4 &996866342
 Transform:
   m_ObjectHideFlags: 0
@@ -1224,7 +1224,7 @@ MonoBehaviour:
   playerNormalGravity: 90
   turnSpeed: 90
   smoothTurn: .300000012
-  rayMaxDistance: 2
+  rayMaxDistance: .300000012
 --- !u!212 &1252747541
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1452,6 +1452,30 @@ Prefab:
       propertyPath: prevSegment
       value: 
       objectReference: {fileID: 996866340}
+    - target: {fileID: 11400004, guid: 8a584c6f6b757c543821347e244a8cbf, type: 2}
+      propertyPath: rayMaxDistance
+      value: .300000012
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400012, guid: 8a584c6f6b757c543821347e244a8cbf, type: 2}
+      propertyPath: rayMaxDistance
+      value: .300000012
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400022, guid: 8a584c6f6b757c543821347e244a8cbf, type: 2}
+      propertyPath: rayMaxDistance
+      value: .300000012
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400024, guid: 8a584c6f6b757c543821347e244a8cbf, type: 2}
+      propertyPath: rayMaxDistance
+      value: .300000012
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 8a584c6f6b757c543821347e244a8cbf, type: 2}
+      propertyPath: rayMaxDistance
+      value: .300000012
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400008, guid: 8a584c6f6b757c543821347e244a8cbf, type: 2}
+      propertyPath: rayMaxDistance
+      value: .300000012
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8a584c6f6b757c543821347e244a8cbf, type: 2}
   m_RootGameObject: {fileID: 1944103702}
@@ -1995,7 +2019,7 @@ MonoBehaviour:
   playerNormalGravity: 90
   turnSpeed: 90
   smoothTurn: .300000012
-  rayMaxDistance: 2
+  rayMaxDistance: .300000012
 --- !u!212 &1947903575
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3259,7 +3283,7 @@ MonoBehaviour:
   playerNormalGravity: 90
   turnSpeed: 90
   smoothTurn: .300000012
-  rayMaxDistance: 2
+  rayMaxDistance: .300000012
 --- !u!212 &2146017583
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -56,6 +56,12 @@ public class PlayerMovement : MonoBehaviour {
 		}
 	}
 
+	private bool segmentWithoutContact {
+		get {
+			return normalMemory < 1;
+		}
+	}
+
 	private void Movement() {
 		float d = inputSegment ? 0f : Input.GetAxisRaw ("Horizontal");
 		wantingToMove = Input.GetButton("Horizontal");
@@ -66,13 +72,21 @@ public class PlayerMovement : MonoBehaviour {
 			if (wantingToMove)
 				TestFlip(d);
 
-			// Try to detect a surface normal, otherwise up
-			RaycastHit2D hit = Physics2D.Raycast (transform.position, -playerNormal, rayMaxDistance, layerMask);
+			// Try to detect a surface normal
+
+			RaycastHit2D hit = Physics2D.Raycast (collider2D.bounds.center, -playerNormal, rayMaxDistance, layerMask);
+
+//			RaycastHit2D hit = Physics2D.CircleCast(transform.position, 1f, -playerNormal, rayMaxDistance, layerMask);
 			if (hit.collider != null) {
 				surfaceNormal = hit.normal;
+				Debug.DrawLine(hit.point, 3f * (collider2D.bounds.center - (Vector3) hit.point), Color.green);
+				Debug.DrawLine(collider2D.bounds.center, collider2D.bounds.center - (Vector3) playerNormal, Color.red);
 			}
-			
-			Debug.DrawLine (v, v + surfaceNormal, Color.green);
+
+			if (segmentWithoutContact)
+				return;
+
+
 			
 			playerNormal = Vector2.Lerp (playerNormal, _surfaceNormal, smoothTurn);
 			transform.up = playerNormal;
