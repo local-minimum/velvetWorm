@@ -25,6 +25,8 @@ public class PlayerMovement : MonoBehaviour {
 	private Quaternion slimeOriginalRotation;
 	private Quaternion slimeReverseRotation;
 
+	public AudioSource walkingSound;
+
 	public bool playerDirection {
 		get {
 			return originalDirection;
@@ -33,6 +35,9 @@ public class PlayerMovement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		if (!walkingSound)
+			walkingSound = gameObject.GetComponentInParent<AudioSource>();
+
 		originalScale = transform.localScale;
 		reflectedScale = originalScale;
 		reflectedScale.x *= -1f;
@@ -76,6 +81,11 @@ public class PlayerMovement : MonoBehaviour {
 	private void Movement() {
 		float d = inputSegment ? 0f : Input.GetAxisRaw ("Horizontal");
 		wantingToMove = Input.GetButton("Horizontal");
+
+		if (wantingToMove && !walkingSound.isPlaying)
+			walkingSound.Play();
+		else if (!wantingToMove && walkingSound.isPlaying)
+			walkingSound.Stop();
 
 		if (Input.GetButtonDown("Flip")) {
 			originalDirection = !originalDirection;
