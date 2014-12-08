@@ -59,8 +59,8 @@ public class LevelCoordinator : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		paused = isPaused;
 		showUIWhilePlaying = PlayerPrefs.GetInt("ShowUI", 1) == 1;
-		Time.timeScale = 0f;
 		if (!uiCanvas)
 			uiCanvas = GameObject.FindObjectOfType<Canvas>();
 
@@ -89,9 +89,10 @@ public class LevelCoordinator : MonoBehaviour {
 			flyTallies.Add(k, ((GameObject)
 			               Instantiate(FlyTallyPrefabs[prefab])).GetComponent<FlyTally>());
 
-
 			flyTallies[k].transform.SetParent(uiCanvas.transform, false);
+
 		}
+
 
 //		Debug.Log(players[0].playerID);
 	}
@@ -153,7 +154,7 @@ public class LevelCoordinator : MonoBehaviour {
 
 		foreach (EnemyFly ef in GameObject.FindObjectsOfType<EnemyFly>()) {
 			if (ef && ef.gameObject) {
-				Destroy(ef);
+				Destroy(ef.gameObject);
 			}
 		}
 

@@ -175,6 +175,11 @@ public class PlayerCannon : MonoBehaviour {
 			audio.Stop();
 			_shooting = false;
 			lastSlime = Time.timeSinceLevelLoad;
+//			if (playerCoord.playerMovementActive.playerDirection == isDefaultDirection) {
+//				slimer.transform.GetChild(0).transform.rotation = Quaternion.AngleAxis(0f, Vector3.forward);
+//			} else
+//				slimer.transform.GetChild(0).transform.rotation = Quaternion.AngleAxis(0f, Vector3.right);
+
 		}
 	}
 	

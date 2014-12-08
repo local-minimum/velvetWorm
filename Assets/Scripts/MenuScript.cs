@@ -8,16 +8,30 @@ public class MenuScript : MonoBehaviour {
 	bool isVisible = true;
 
 	public UnityEngine.UI.Button resumeButton;
+	public UnityEngine.UI.Button playButton;
+	public UnityEngine.UI.Button controlsButton;
+	public UnityEngine.UI.Button aboutUsButton;
+	public UnityEngine.UI.Button aboutWormButton;
+	public UnityEngine.UI.Button quitButton;
+
+	public UnityEngine.UI.Image menuBG;
+	public UnityEngine.UI.Image menuLogo;
+	public UnityEngine.UI.Image controlsDisplay;
+
+	bool showingControls = false;
 
 	// Use this for initialization
 	void Start () {
 		levelCoordinator = GameObject.FindObjectOfType<LevelCoordinator>();
 		Show ();
+//		ClickPlay();
 	}
 	
 	// Update is called once per frame
 	void Update() {
 		if (isVisible) {
+			if (showingControls && Input.anyKeyDown)
+				HideControls();
 
 		} else {
 			if (Input.GetButtonDown("Pause") || Input.GetButtonDown("Cancel"))
@@ -37,8 +51,11 @@ public class MenuScript : MonoBehaviour {
 
 	public void ClickResume() {
 		levelCoordinator.paused = false;
-		foreach (Transform t in transform)
-			t.gameObject.SetActive(false);
+
+		ShowButtons(false);
+		menuBG.enabled = false;
+		menuLogo.enabled = false;
+
 		isVisible = false;
 	}
 
@@ -55,14 +72,33 @@ public class MenuScript : MonoBehaviour {
 	}
 
 	public void ClickControls() {
+		showingControls = true;
+		ShowButtons(false);
+		controlsDisplay.enabled = true;
+	}
 
+	void HideControls() {
+		showingControls = false;
+		controlsDisplay.enabled = false;
+		ShowButtons(true);
+	}
+
+	private void ShowButtons(bool val) {
+		playButton.gameObject.SetActive(val);
+		resumeButton.gameObject.SetActive(val);
+		controlsButton.gameObject.SetActive(val);
+		aboutUsButton.gameObject.SetActive(val);
+		aboutWormButton.gameObject.SetActive(val);
+		quitButton.gameObject.SetActive(val);
 	}
 
 	public void Show() {
 		levelCoordinator.paused = true;
 		resumeButton.interactable = levelCoordinator.started;
-		foreach (Transform t in transform)
-			t.gameObject.SetActive(true);
+		ShowButtons(true);
+		menuBG.enabled = true;
+		menuLogo.enabled = true;
 		isVisible = true;
+		controlsDisplay.enabled = false;
 	}
 }
