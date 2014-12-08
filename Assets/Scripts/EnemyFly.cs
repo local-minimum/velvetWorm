@@ -33,6 +33,9 @@ public class EnemyFly : MonoBehaviour {
 
 	private ParticleSystem selfSlimer;
 	public AudioClip dyingSound;
+	public AudioClip thudSound;
+	public AudioClip splotSound;
+
 	private float soundX = 0f;
 
 	public bool isAlive {
@@ -124,5 +127,13 @@ public class EnemyFly : MonoBehaviour {
 
 			yield return new WaitForSeconds(Random.Range(0.8f*dist, 2.0f+dist));
 		}
+	}
+
+	void OnCollisionEnter2D(Collision2D col) {
+		if (isAlive)
+			return;
+
+		audio.PlayOneShot(splotSound, 1f);
+		audio.PlayOneShot(thudSound, 1f);
 	}
 }

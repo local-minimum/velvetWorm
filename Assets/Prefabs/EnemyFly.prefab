@@ -228,6 +228,8 @@ MonoBehaviour:
   pnt_x: 0
   pnt_y: 0
   dyingSound: {fileID: 8300000, guid: 32d26c5d88c30b549ac65c5109659751, type: 3}
+  thudSound: {fileID: 8300000, guid: a85a070a5eeaa8f4a97b5c71cebf129f, type: 3}
+  splotSound: {fileID: 8300000, guid: 6333874e0c1d37a4b940b7027f6025e6, type: 3}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
