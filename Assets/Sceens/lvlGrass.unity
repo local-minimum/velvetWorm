@@ -305,12 +305,7 @@ GameObject:
   - 60: {fileID: 378796094}
   - 60: {fileID: 378796093}
   - 60: {fileID: 378796092}
-  - 61: {fileID: 378796091}
-  - 61: {fileID: 378796090}
-  - 58: {fileID: 378796089}
   - 58: {fileID: 378796088}
-  - 58: {fileID: 378796087}
-  - 58: {fileID: 378796101}
   - 114: {fileID: 378796102}
   m_Layer: 9
   m_Name: level
@@ -319,17 +314,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!58 &378796087
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 378796086}
-  m_Enabled: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Radius: .851899862
-  m_Center: {x: -4.78000021, y: -3.29999995}
 --- !u!58 &378796088
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -341,39 +325,6 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_Radius: 1.11726642
   m_Center: {x: .159999996, y: -3.70000005}
---- !u!58 &378796089
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 378796086}
-  m_Enabled: 0
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Radius: .660000026
-  m_Center: {x: 2.19000006, y: -2.3599999}
---- !u!61 &378796090
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 378796086}
-  m_Enabled: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Size: {x: .261792183, y: 7.67999983}
-  m_Center: {x: -5.12615252, y: 0}
---- !u!61 &378796091
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 378796086}
-  m_Enabled: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Size: {x: 10.2399998, y: .243749619}
-  m_Center: {x: 0, y: 3.89194202}
 --- !u!60 &378796092
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -441,10 +392,11 @@ PolygonCollider2D:
     - - {x: .822424173, y: 3.81938314}
       - {x: -5.45101547, y: 3.8689971}
       - {x: -5.33884478, y: 3.11035919}
-      - {x: -5.08047104, y: 2.76940775}
-      - {x: -5.01861525, y: 3.5602746}
-      - {x: -4.97700357, y: 3.73893738}
-      - {x: -4.80740452, y: 3.7774353}
+      - {x: -5.00342131, y: 2.75656629}
+      - {x: -5.08282328, y: 3.40617537}
+      - {x: -5.04121161, y: 3.64904618}
+      - {x: -4.92297888, y: 3.7517519}
+      - {x: -4.70155954, y: 3.7896769}
       - {x: .771016896, y: 3.75913739}
       - {x: .887537062, y: 3.62514043}
       - {x: .90351063, y: 3.47301412}
@@ -455,11 +407,11 @@ PolygonCollider2D:
       - {x: .827411234, y: 1.86091387}
       - {x: .890361011, y: 1.80665481}
       - {x: 1.13604546, y: 1.77977371}
-      - {x: 1.2102648, y: 1.82278872}
+      - {x: 1.2174201, y: 1.76554656}
       - {x: 1.30831504, y: 1.70443058}
       - {x: 1.51215935, y: 1.6844641}
-      - {x: 1.57217729, y: 1.82701755}
-      - {x: 1.75665939, y: 1.84335411}
+      - {x: 1.62226415, y: 1.81270695}
+      - {x: 1.79959095, y: 1.90059626}
       - {x: 1.96265483, y: 2.1149919}
       - {x: 1.526474, y: 3.04451656}
       - {x: 1.35868359, y: 3.32276654}
@@ -479,8 +431,12 @@ PolygonCollider2D:
     - - {x: -4.93265295, y: 2.77859235}
       - {x: -5.150877, y: 3.00631499}
       - {x: -5.15087652, y: -3.12982392}
-      - {x: -4.76071072, y: -2.8828063}
-      - {x: -4.60632515, y: .814032316}
+      - {x: -4.47442627, y: -2.61015439}
+      - {x: -4.78206825, y: -2.4636395}
+      - {x: -4.83812761, y: -1.9695884}
+      - {x: -4.73918438, y: -1.40798926}
+      - {x: -4.66488028, y: -.068529129}
+      - {x: -4.56159735, y: .590395093}
 --- !u!60 &378796096
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -552,8 +508,9 @@ PolygonCollider2D:
       - {x: -1.25896406, y: -1.80679893}
       - {x: -2.27084851, y: -2.15029192}
       - {x: -2.73354983, y: -1.9272145}
-      - {x: -4.3734169, y: -2.41930723}
-      - {x: -4.64633322, y: -2.71185517}
+      - {x: -3.91444945, y: -2.25106311}
+      - {x: -4.23408222, y: -2.54778171}
+      - {x: -4.70392036, y: -2.62547445}
       - {x: -4.80582714, y: -3.36378264}
       - {x: -4.4138937, y: -3.83999991}
       - {x: -.321173668, y: -3.82365799}
@@ -593,17 +550,6 @@ Transform:
   - {fileID: 839304948}
   m_Father: {fileID: 0}
   m_RootOrder: 2
---- !u!58 &378796101
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 378796086}
-  m_Enabled: 0
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Radius: .439999998
-  m_Center: {x: -3.25, y: -2.00999999}
 --- !u!114 &378796102
 MonoBehaviour:
   m_ObjectHideFlags: 0
