@@ -109,6 +109,10 @@ public class EnemyFly : MonoBehaviour {
 		audio.Stop();
 		audio.loop = false;
 		audio.PlayOneShot(dyingSound);
+		Animator anim = GetComponent<Animator>();
+		if (anim) {
+			anim.Play("Death");
+		}
 	}
 
 	public void Slime() {

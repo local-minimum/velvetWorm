@@ -13,13 +13,15 @@ public class LevelCoordinator : MonoBehaviour {
 	public GameObject[] FlyTallyPrefabs;
 	public Canvas uiCanvas;
 	public UnityEngine.UI.Text recordTime;
-
+	public UnityEngine.UI.Text lastTime;
 	public string lvlName;
 	
 	private float lastKill;
 	private bool noSpawn = true;
 	private bool isPaused = true;
 	private bool showUIWhilePlaying;
+
+	private MenuScript menu;
 
 	public bool started {
 		get {
@@ -45,6 +47,12 @@ public class LevelCoordinator : MonoBehaviour {
 		}
 	}
 
+	private string lastTimeKey {
+		get {
+			return string.Format("{0}_{1}_lastTime", lvlName, numberOfPlayers);
+		}
+	}
+
 	public int numberOfPlayers {
 		get {
 			return players.Count();
@@ -60,16 +68,24 @@ public class LevelCoordinator : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		paused = isPaused;
+		noSpawn = true;
 		showUIWhilePlaying = PlayerPrefs.GetInt("ShowUI", 1) == 1;
 		if (!uiCanvas)
 			uiCanvas = GameObject.FindObjectOfType<Canvas>();
-
+		menu = GameObject.FindObjectOfType<MenuScript>();
+		UpdateTimeInfo();
 //		players.AddRange(GameObject.FindObjectsOfType<PlayerCoordinator>());
 		setupTallies();
+	}
+
+	public void UpdateTimeInfo() {
 
 		recordTime.text = string.Format("Best Time: {0}", 
 		                                FlyTally.TimeToString(PlayerPrefs.GetFloat(recordTimeKey, 999.99f)));
-	
+
+		lastTime.text = string.Format("Last Time: {0}", 
+		                                FlyTally.TimeToString(PlayerPrefs.GetFloat(lastTimeKey, 999.99f)));
+
 	}
 
 
@@ -101,7 +117,7 @@ public class LevelCoordinator : MonoBehaviour {
 	}
 
 	public void RegisterKill(int team, EnemyFly enemy) {
-		Debug.Log(team);
+//		Debug.Log(team);
 		if (team < 0) 
 			team = players[0].playerID;
 
@@ -124,7 +140,10 @@ public class LevelCoordinator : MonoBehaviour {
 		if (PlayerPrefs.GetFloat(recordTimeKey, 999f) > t) 
 			PlayerPrefs.SetFloat(recordTimeKey, t);
 
-//		Application.LoadLevel(Application.loadedLevel);
+		PlayerPrefs.SetFloat(lastTimeKey, t);
+		UpdateTimeInfo();
+		noSpawn = true;
+		menu.Show();
 	}
 
 	IEnumerator<WaitForSeconds> SpawnEnemy(float delay) {
