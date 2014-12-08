@@ -65,12 +65,15 @@ public class PlayerMovement : MonoBehaviour {
 	private void Movement() {
 		float d = inputSegment ? 0f : Input.GetAxisRaw ("Horizontal");
 		wantingToMove = Input.GetButton("Horizontal");
-		transform.localScale = originalDirection ? originalScale : reflectedScale;
+
+		if (Input.GetButtonDown("Flip")) {
+			originalDirection = !originalDirection;
+			transform.localScale = originalDirection ? originalScale : reflectedScale;
+		}
 
 		if (hugSurface) {
 			Vector2 v = new Vector2 (transform.position.x, transform.position.y);
-			if (wantingToMove)
-				TestFlip(d);
+
 
 			// Try to detect a surface normal
 
@@ -96,7 +99,7 @@ public class PlayerMovement : MonoBehaviour {
 			transform.up = playerNormal;
 			
 			if (wantingToMove) 
-				rigidbody2D.velocity = transform.right * Time.deltaTime * speed * d;
+				rigidbody2D.velocity = transform.right * Time.deltaTime * speed * d * (originalDirection ? 1f : -1f);
 			
 		}
 	
