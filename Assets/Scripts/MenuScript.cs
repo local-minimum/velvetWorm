@@ -23,6 +23,7 @@ public class MenuScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		levelCoordinator = GameObject.FindObjectOfType<LevelCoordinator>();
+//		PlayerPrefs.DeleteAll();
 		Show ();
 //		ClickPlay();
 	}

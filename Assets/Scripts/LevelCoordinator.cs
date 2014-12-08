@@ -80,11 +80,9 @@ public class LevelCoordinator : MonoBehaviour {
 
 	public void UpdateTimeInfo() {
 
-		recordTime.text = string.Format("Best Time: {0}", 
-		                                FlyTally.TimeToString(PlayerPrefs.GetFloat(recordTimeKey, 999.99f)));
+		recordTime.text = FlyTally.TimeToString(PlayerPrefs.GetFloat(recordTimeKey, 999.99f));
 
-		lastTime.text = string.Format("Last Time: {0}", 
-		                                FlyTally.TimeToString(PlayerPrefs.GetFloat(lastTimeKey, 999.99f)));
+		lastTime.text = FlyTally.TimeToString(PlayerPrefs.GetFloat(lastTimeKey, 999.99f));
 
 	}
 
