@@ -32,6 +32,8 @@ public class EnemyFly : MonoBehaviour {
 	private bool _isAlive = true;
 
 	private ParticleSystem selfSlimer;
+	public AudioClip dyingSound;
+	private float soundX = 0f;
 
 	public bool isAlive {
 		get {
@@ -56,6 +58,9 @@ public class EnemyFly : MonoBehaviour {
 	{
 		if (!_isAlive)
 			return;
+
+		soundX += Random.Range(0.1f, 0.3f);
+		audio.volume = Mathf.PerlinNoise(0f, soundX);
 
 		Debug.DrawLine(transform.position, new Vector3(pnt_x,pnt_y));
 
@@ -95,7 +100,9 @@ public class EnemyFly : MonoBehaviour {
 		rigidbody2D.AddTorque(Random.Range(-deadTorque, deadTorque));
 		rigidbody2D.gravityScale = deadDropGravity;
 		gameObject.layer = LayerMask.NameToLayer("Food");
-
+		audio.Stop();
+		audio.loop = false;
+		audio.PlayOneShot(dyingSound);
 	}
 
 	public void Slime() {

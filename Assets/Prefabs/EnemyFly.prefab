@@ -227,6 +227,7 @@ MonoBehaviour:
   points: []
   pnt_x: 0
   pnt_y: 0
+  dyingSound: {fileID: 8300000, guid: 32d26c5d88c30b549ac65c5109659751, type: 3}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
