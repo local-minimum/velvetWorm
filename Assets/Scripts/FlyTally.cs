@@ -59,6 +59,11 @@ public class FlyTally : MonoBehaviour {
 			mS = 0;
 		}
 
+		if (s > 999) {
+			s = 999f;
+			mS = 99;
+		}
+
 		return string.Format("{0}:{1:00}", (int) s, mS);
 	}
 

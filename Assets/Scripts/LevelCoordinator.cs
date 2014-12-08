@@ -118,6 +118,8 @@ public class LevelCoordinator : MonoBehaviour {
 
 	private void LevelWon(int team) {
 		float t = flyTallies[team].averageTime;
+		if (t > 999)
+			t = 999;
 
 		if (PlayerPrefs.GetFloat(recordTimeKey, 999f) > t) 
 			PlayerPrefs.SetFloat(recordTimeKey, t);
