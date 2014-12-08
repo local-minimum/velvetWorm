@@ -152,15 +152,20 @@ public class LevelCoordinator : MonoBehaviour {
 		if (noSpawn)
 			return;
 
-		foreach (EnemyFly ef in GameObject.FindObjectsOfType<EnemyFly>()) {
+		EnemyFly[] efs = GameObject.FindObjectsOfType<EnemyFly>();
+
+		foreach (EnemyFly ef in efs) {
 			if (ef && ef.gameObject) {
 				Destroy(ef.gameObject);
 			}
 		}
 
 
-		foreach (FlyTally ft in flyTallies.Values)
-			ft.Reset();
+		foreach (FlyTally ft in flyTallies.Values) {
+			if (ft)
+				ft.Reset();
+
+		}
 
 		noSpawn = true;
 	}

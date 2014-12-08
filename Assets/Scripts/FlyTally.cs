@@ -80,16 +80,18 @@ public class FlyTally : MonoBehaviour {
 	}
 
 	public void Reset() {
-
+		gameObject.SetActive(true);
+//		Debug.Log(flies.Length);
 		flyClocks = new UnityEngine.UI.Text[flies.Length];
 		flyTimes = new float[flies.Length];
-
+//		Debug.Log("X");
 		for (int i=0; i<flies.Length;i++) {
 			UnityEngine.UI.Image im = flies[i].GetComponent<UnityEngine.UI.Image>();
 			im.color = aliveFly;
-			//add shake?
+//			Debug.Log(i);
 
 			flyClocks[i] = flies[i].GetComponentInChildren<UnityEngine.UI.Text>();
+//			Debug.Log("--");
 			flyClocks[i].text = "0:00";
 		}
 
