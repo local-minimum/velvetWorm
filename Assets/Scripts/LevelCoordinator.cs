@@ -148,8 +148,15 @@ public class LevelCoordinator : MonoBehaviour {
 	}
 
 	public void Reset() {
-		foreach (EnemyFly ef in GameObject.FindObjectsOfType<EnemyFly>())
-			Destroy(ef.gameObject);
+		if (noSpawn)
+			return;
+
+		foreach (EnemyFly ef in GameObject.FindObjectsOfType<EnemyFly>()) {
+			if (ef && ef.gameObject) {
+				Destroy(ef);
+			}
+		}
+
 
 		foreach (FlyTally ft in flyTallies.Values)
 			ft.Reset();

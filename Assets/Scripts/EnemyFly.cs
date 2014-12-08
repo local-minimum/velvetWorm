@@ -31,6 +31,8 @@ public class EnemyFly : MonoBehaviour {
 
 	private bool _isAlive = true;
 
+	private LevelCoordinator levelCoordinator;
+
 	private ParticleSystem selfSlimer;
 	public AudioClip dyingSound;
 	public AudioClip thudSound;
@@ -48,6 +50,7 @@ public class EnemyFly : MonoBehaviour {
 	// Use this for initialization
 	public void Start ()
 	{
+		levelCoordinator = GameObject.FindObjectOfType<LevelCoordinator>();
 		selfSlimer = gameObject.GetComponent<ParticleSystem>();
 		points = GameObject.FindGameObjectsWithTag("FlyTag").Select(e => e.transform).ToArray();
 		transform.position = points[Random.Range(0, points.Count() - 1)].position;
@@ -59,7 +62,7 @@ public class EnemyFly : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
-		if (!_isAlive)
+		if (!_isAlive || levelCoordinator.paused)
 			return;
 
 		soundX += Random.Range(0.1f, 0.3f);

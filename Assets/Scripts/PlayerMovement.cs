@@ -26,6 +26,7 @@ public class PlayerMovement : MonoBehaviour {
 	private Quaternion slimeReverseRotation;
 
 	public AudioSource walkingSound;
+	private LevelCoordinator levelCoordinator;
 
 	public bool playerDirection {
 		get {
@@ -35,6 +36,8 @@ public class PlayerMovement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		levelCoordinator = GameObject.FindObjectOfType<LevelCoordinator>();
+
 		if (!walkingSound)
 			walkingSound = gameObject.GetComponentInParent<AudioSource>();
 
@@ -51,12 +54,14 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-		rigidbody2D.AddForce (-playerNormalGravity * rigidbody2D.mass * playerNormal);
+		if (!levelCoordinator.paused)
+			rigidbody2D.AddForce (-playerNormalGravity * rigidbody2D.mass * playerNormal);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		Movement ();
+		if (!levelCoordinator.paused)
+			Movement ();
 	}
 
 	Vector2 surfaceNormal {

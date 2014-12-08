@@ -16,7 +16,7 @@ public class MenuScript : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void OnGUI() {
+	void Update() {
 		if (isVisible) {
 
 		} else {
@@ -26,9 +26,13 @@ public class MenuScript : MonoBehaviour {
 	}
 
 	public void ClickPlay() {
+//		Debug.Log("Player");
 		levelCoordinator.Reset();
+//		Debug.Log("Player");
 		levelCoordinator.SpawnOneEnemyEach();
+//		Debug.Log("Player");
 		ClickResume();
+//		Debug.Log("Player");
 	}
 
 	public void ClickResume() {
