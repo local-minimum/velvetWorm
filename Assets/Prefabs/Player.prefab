@@ -187,7 +187,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.19779992, y: .902499974, z: 0}
+  m_LocalPosition: {x: -1.38890004, y: -.484100014, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400008}
@@ -454,7 +454,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Radius: .140000001
+  m_Radius: .0854232311
   m_Center: {x: .0599999987, y: 0}
 --- !u!58 &5800010
 CircleCollider2D:
@@ -548,8 +548,8 @@ MonoBehaviour:
   speed: 100
   playerNormalGravity: 90
   turnSpeed: 90
-  smoothTurn: 10
-  rayMaxDistance: 2
+  smoothTurn: .300000012
+  rayMaxDistance: .300000012
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -586,8 +586,8 @@ MonoBehaviour:
   speed: 100
   playerNormalGravity: 90
   turnSpeed: 90
-  smoothTurn: 10
-  rayMaxDistance: 2
+  smoothTurn: .300000012
+  rayMaxDistance: .300000012
 --- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -624,8 +624,8 @@ MonoBehaviour:
   speed: 100
   playerNormalGravity: 90
   turnSpeed: 90
-  smoothTurn: 10
-  rayMaxDistance: 2
+  smoothTurn: .300000012
+  rayMaxDistance: .300000012
 --- !u!114 &11400010
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -662,8 +662,8 @@ MonoBehaviour:
   speed: 100
   playerNormalGravity: 90
   turnSpeed: 90
-  smoothTurn: 10
-  rayMaxDistance: 2
+  smoothTurn: .300000012
+  rayMaxDistance: .300000012
 --- !u!114 &11400014
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -676,7 +676,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cannon: {fileID: 11400016}
-  prevSegment: {fileID: 0}
+  prevSegment: {fileID: 11400020}
   walkDelay: .25
   followsLead: 1
 --- !u!114 &11400016
@@ -741,8 +741,8 @@ MonoBehaviour:
   speed: 100
   playerNormalGravity: 90
   turnSpeed: 90
-  smoothTurn: 10
-  rayMaxDistance: 2
+  smoothTurn: .300000012
+  rayMaxDistance: .300000012
 --- !u!114 &11400024
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -764,8 +764,8 @@ MonoBehaviour:
   speed: 100
   playerNormalGravity: 90
   turnSpeed: 90
-  smoothTurn: 10
-  rayMaxDistance: 2
+  smoothTurn: .300000012
+  rayMaxDistance: .300000012
 --- !u!114 &11400026
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1902,7 +1902,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingOrder: 3
   m_Sprite: {fileID: 21300002, guid: c63f3a8b20cf6ea4a816aca33da569ae, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: .941176474, g: .0138408439, b: .646986961, a: 1}
 --- !u!212 &21200002
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -1924,7 +1924,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300002, guid: c63f3a8b20cf6ea4a816aca33da569ae, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: .941176474, g: .0138408439, b: .646986961, a: 1}
 --- !u!212 &21200004
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -1946,7 +1946,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: 9de27c11f2536dc4c9bf61ea6606d1b0, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: .941176474, g: .0138408439, b: .646986961, a: 1}
 --- !u!212 &21200006
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -1968,7 +1968,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300002, guid: c63f3a8b20cf6ea4a816aca33da569ae, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: .941176474, g: .0138408439, b: .646986961, a: 1}
 --- !u!212 &21200008
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -2012,7 +2012,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 199658ec8e6ed8c4da2625c9a0635d44, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: .941176474, g: .0138408439, b: .646986961, a: 1}
 --- !u!212 &21200012
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -2034,7 +2034,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300002, guid: c63f3a8b20cf6ea4a816aca33da569ae, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: .941176474, g: .0138408439, b: .646986961, a: 1}
 --- !u!233 &23300000
 HingeJoint2D:
   m_ObjectHideFlags: 1
