@@ -116,12 +116,12 @@ public class PlayerCannon : MonoBehaviour {
 		} else if (_shooting) {
 			_rndWobblingY += shootingWobblingF * Time.deltaTime;
 			
-			angle = ClampRotation(angle + shootingWobbling * (Mathf.PerlinNoise(_rndWobblingX, _rndWobblingY) - perlinMean) + Input.GetAxis("Vertical") * rotationSpeed * _flipYVal,
+			angle = ClampRotation(angle + shootingWobbling * (Mathf.PerlinNoise(_rndWobblingX, _rndWobblingY) - perlinMean) + Input.GetAxis("Aim1") * rotationSpeed * _flipYVal,
 			                      -flexAngle, flexAngle, baseW); 
 
 		} else if (still) {
 
-			angle = ClampRotation(angle + Input.GetAxis("Vertical") * rotationSpeed * _flipYVal, 
+			angle = ClampRotation(angle + Input.GetAxis("Aim1") * rotationSpeed * _flipYVal, 
 			                      -flexAngle, flexAngle, baseW); 
 
 		} else if (!headMovement.wantingToMove) {
@@ -160,14 +160,14 @@ public class PlayerCannon : MonoBehaviour {
 
 	void FixedUpdate() {
 //		Debug.Log(string.Format("{0} {1} {2}", still, Input.GetButton("Fire1"), slimeEmitter.isPaused));
-		if (still && Input.GetButton("Fire1") && !_shooting &&  (Time.timeSinceLevelLoad - lastSlime > slimeBetweenTime)) {
+		if (still && Input.GetButton("Fire1_1") && !_shooting &&  (Time.timeSinceLevelLoad - lastSlime > slimeBetweenTime)) {
 		    if (playerCoord.playerMovementActive.playerDirection == isDefaultDirection) {
 				audio.Play();
 				slimer.Play();
 			}
 			_shooting = true;
 
-		} else if (_shooting && (Time.timeSinceLevelLoad - lastSlime < maxSlimingTime ) && Input.GetButton("Fire1")  ) {
+		} else if (_shooting && (Time.timeSinceLevelLoad - lastSlime < maxSlimingTime ) && Input.GetButton("Fire1_1")  ) {
 
 		
 		} else if (_shooting) {

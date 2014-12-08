@@ -79,7 +79,7 @@ public class FlyTally : MonoBehaviour {
 		caugthFlies ++;
 	}
 
-	void Reset() {
+	public void Reset() {
 
 		flyClocks = new UnityEngine.UI.Text[flies.Length];
 		flyTimes = new float[flies.Length];

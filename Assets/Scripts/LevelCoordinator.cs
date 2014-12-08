@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,7 +17,27 @@ public class LevelCoordinator : MonoBehaviour {
 	public string lvlName;
 	
 	private float lastKill;
-	private bool noSpawn;
+	private bool noSpawn = true;
+	private bool isPaused = true;
+	private bool showUIWhilePlaying;
+
+	public bool started {
+		get {
+			return !noSpawn;
+		}
+	}
+
+	public bool paused {
+		get {
+			return isPaused;
+		}
+
+		set {
+			Time.timeScale = value ? 0f : 1f;
+			isPaused = value;
+			SetUIVisibility(!value ? showUIWhilePlaying : false);
+		}
+	}
 
 	private string recordTimeKey {
 		get {
@@ -39,16 +59,13 @@ public class LevelCoordinator : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
+		showUIWhilePlaying = PlayerPrefs.GetInt("ShowUI", 1) == 1;
+		Time.timeScale = 0f;
 		if (!uiCanvas)
 			uiCanvas = GameObject.FindObjectOfType<Canvas>();
 
 //		players.AddRange(GameObject.FindObjectsOfType<PlayerCoordinator>());
 		setupTallies();
-
-		for (int i=0; i<startingEnemies; i++)
-			StartCoroutine( SpawnEnemy(Random.Range(1f, 3f)));
-
 
 		recordTime.text = string.Format("Best Time: {0}", 
 		                                FlyTally.TimeToString(PlayerPrefs.GetFloat(recordTimeKey, 999.99f)));
@@ -122,5 +139,27 @@ public class LevelCoordinator : MonoBehaviour {
 		SetSpawnTime();
 		noSpawn = false;
 	}
-	
+
+
+	public void SpawnOneEnemyEach() {
+		
+		for (int i=0; i<startingEnemies; i++)
+			StartCoroutine( SpawnEnemy(Random.Range(1f, 3f)));
+	}
+
+	public void Reset() {
+		foreach (EnemyFly ef in GameObject.FindObjectsOfType<EnemyFly>())
+			Destroy(ef.gameObject);
+
+		foreach (FlyTally ft in flyTallies.Values)
+			ft.Reset();
+
+		noSpawn = true;
+	}
+
+	private void SetUIVisibility(bool val) {
+
+		foreach (FlyTally ft in flyTallies.Values)
+			ft.gameObject.SetActive(val);
+	}
 }

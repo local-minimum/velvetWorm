@@ -79,15 +79,15 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	private void Movement() {
-		float d = inputSegment ? 0f : Input.GetAxisRaw ("Horizontal");
-		wantingToMove = Input.GetButton("Horizontal");
+		float d = inputSegment ? 0f : Input.GetAxisRaw ("Movement1");
+		wantingToMove = Input.GetButton("Movement1");
 
 		if (wantingToMove && !walkingSound.isPlaying)
 			walkingSound.Play();
 		else if (!wantingToMove && walkingSound.isPlaying)
 			walkingSound.Stop();
 
-		if (Input.GetButtonDown("Flip")) {
+		if (Input.GetButtonDown("Flip1")) {
 			originalDirection = !originalDirection;
 			transform.localScale = originalDirection ? originalScale : reflectedScale;
 //			mySegment.cannon.transform.localScale = originalDirection ? originalScale : reflectedScale;
