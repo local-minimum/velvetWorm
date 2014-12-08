@@ -5,7 +5,8 @@ public class PlayerSegment : MonoBehaviour {
 
 	public PlayerCannon cannon;
 	public PlayerSegment prevSegment = null;
-	
+	private PlayerMovement playerMovement;
+
 	private bool _shooting = false;
 	float _walkstart = 0f;
 	public float walkDelay = 0.1f;
@@ -31,11 +32,19 @@ public class PlayerSegment : MonoBehaviour {
 		}
 	}
 
+	public PlayerMovement movement {
+
+		get {
+			return playerMovement;
+		}
+	}
+
 	public bool followsLead = true;
 
 	// Use this for initialization
 	void Start () {
 		anim = gameObject.GetComponent<Animator>();
+		playerMovement = GetComponent<PlayerMovement>();
 	}
 	
 	// Update is called once per frame

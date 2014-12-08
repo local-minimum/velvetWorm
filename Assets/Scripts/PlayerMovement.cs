@@ -79,8 +79,8 @@ public class PlayerMovement : MonoBehaviour {
 //			RaycastHit2D hit = Physics2D.CircleCast(transform.position, 1f, -playerNormal, rayMaxDistance, layerMask);
 			if (hit.collider != null) {
 				surfaceNormal = hit.normal;
-				Debug.DrawLine(hit.point, 3f * (collider2D.bounds.center - (Vector3) hit.point), Color.green);
-				Debug.DrawLine(collider2D.bounds.center, collider2D.bounds.center - (Vector3) playerNormal, Color.red);
+				Debug.DrawLine(hit.point, hit.point + hit.normal, Color.green);
+//				Debug.DrawLine(collider2D.bounds.center, collider2D.bounds.center - (Vector3) playerNormal, Color.red);
 			}
 
 			if (segmentWithoutContact)
@@ -89,6 +89,10 @@ public class PlayerMovement : MonoBehaviour {
 
 			
 			playerNormal = Vector2.Lerp (playerNormal, _surfaceNormal, smoothTurn);
+
+			if (mySegment.prevSegment && wantingToMove)
+				playerNormal = Vector2.Lerp(playerNormal, mySegment.prevSegment.movement.playerNormal, smoothTurn);
+
 			transform.up = playerNormal;
 			
 			if (wantingToMove) 
