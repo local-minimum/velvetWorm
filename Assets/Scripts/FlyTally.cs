@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 public class FlyTally : MonoBehaviour {
 
@@ -12,8 +13,8 @@ public class FlyTally : MonoBehaviour {
 	public Color deadFly;
 
 	private int caugthFlies = 0;
+	private LevelCoordinator lvlCoord;
 
-	private float lastKill;
 
 	public bool completed {
 		get {
@@ -21,8 +22,16 @@ public class FlyTally : MonoBehaviour {
 		}
 	}
 
+	public float averageTime {
+		get {
+			return flyTimes.Sum() / (float) flyTimes.Count();
+		}
+	}
+
 	// Use this for initialization
 	void Start () {
+		lvlCoord = GameObject.FindObjectOfType<LevelCoordinator>();
+
 		Reset();
 	}
 	
@@ -33,15 +42,15 @@ public class FlyTally : MonoBehaviour {
 		SetCurrentFlyTime();
 	}
 
-	void SetCurrentFlyTime() {
-		flyTimes[caugthFlies] = Time.timeSinceLevelLoad - lastKill;
+	public static string TimeToString(float f) {
+
 		float s = 0f;
-		if (flyTimes[caugthFlies] >= 1f)
- 			s = Mathf.Floor(flyTimes[caugthFlies]);
-
-		int mS = Mathf.RoundToInt((flyTimes[caugthFlies] % s) * 100f);
-
-
+		if (f >= 1f)
+			s = Mathf.Floor(f);
+		
+		int mS = Mathf.RoundToInt((f % s) * 100f);
+		
+		
 		if (mS == 100) {
 			mS = 0;
 			s += 1f;
@@ -50,8 +59,19 @@ public class FlyTally : MonoBehaviour {
 			mS = 0;
 		}
 
-		flyClocks[caugthFlies].text = string.Format("{0}:{1:00}", (int) s, mS);
+		if (s > 999) {
+			s = 999f;
+			mS = 99;
+		}
+
+		return string.Format("{0}:{1:00}", (int) s, mS);
 	}
+
+	void SetCurrentFlyTime() {
+		flyTimes[caugthFlies] = Time.timeSinceLevelLoad - lvlCoord.enemyClock;
+		flyClocks[caugthFlies].text = TimeToString(flyTimes[caugthFlies]);
+	}
+
 
 	public void CatchFly () {
 		if (caugthFlies  >= flies.Length)
@@ -62,23 +82,24 @@ public class FlyTally : MonoBehaviour {
 		UnityEngine.UI.Image im = flies[caugthFlies].GetComponent<UnityEngine.UI.Image>();
 		im.color = deadFly;
 		caugthFlies ++;
-		lastKill = Time.timeSinceLevelLoad;
 	}
 
-	void Reset() {
-
+	public void Reset() {
+		gameObject.SetActive(true);
+		Debug.Log("Resetting tally");
 		flyClocks = new UnityEngine.UI.Text[flies.Length];
 		flyTimes = new float[flies.Length];
-
+//		Debug.Log("X");
 		for (int i=0; i<flies.Length;i++) {
 			UnityEngine.UI.Image im = flies[i].GetComponent<UnityEngine.UI.Image>();
 			im.color = aliveFly;
-			//add shake?
+//			Debug.Log(i);
 
 			flyClocks[i] = flies[i].GetComponentInChildren<UnityEngine.UI.Text>();
+//			Debug.Log("--");
 			flyClocks[i].text = "0:00";
 		}
+		caugthFlies = 0;
 
-		lastKill = Time.timeSinceLevelLoad;
 	}
 }

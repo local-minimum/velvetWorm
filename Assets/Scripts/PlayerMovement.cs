@@ -16,58 +16,128 @@ public class PlayerMovement : MonoBehaviour {
 	public float rayMaxDistance = 1f;
 
 	private Vector2 playerNormal;
-	private Vector2 surfaceNormal;
+	private Vector2 _surfaceNormal;
+	private int normalMemory;
+
+	private bool originalDirection = true;
+	private Vector3 originalScale;
+	private Vector3 reflectedScale;
+	private Quaternion slimeOriginalRotation;
+	private Quaternion slimeReverseRotation;
+
+	public AudioSource walkingSound;
+	private LevelCoordinator levelCoordinator;
+
+	public bool playerDirection {
+		get {
+			return originalDirection;
+		}
+	}
 
 	// Use this for initialization
 	void Start () {
+		levelCoordinator = GameObject.FindObjectOfType<LevelCoordinator>();
 
+		if (!walkingSound)
+			walkingSound = gameObject.GetComponentInParent<AudioSource>();
+
+		originalScale = transform.localScale;
+		reflectedScale = originalScale;
+		reflectedScale.x *= -1f;
 		mySegment = gameObject.GetComponent<PlayerSegment>();
+
+//		slimeOriginalRotation = mySegment.cannon.slimer.transform.localRotation;
+//		slimeReverseRotation = Quaternion.Euler(-90f, 90f, 180f) * slimeOriginalRotation;
+//		slimerReverseScale.x *= -1;
+
 		playerNormal = transform.up;
 	}
 
 	void FixedUpdate() {
-		rigidbody2D.AddForce (-playerNormalGravity * rigidbody2D.mass * playerNormal);
+		if (!levelCoordinator.paused)
+			rigidbody2D.AddForce (-playerNormalGravity * rigidbody2D.mass * playerNormal);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		Movement ();
+		if (!levelCoordinator.paused)
+			Movement ();
+	}
+
+	Vector2 surfaceNormal {
+		set {
+			_surfaceNormal = value;
+			normalMemory = 3;
+		}
+
+		get {
+			normalMemory--;
+
+			return normalMemory > 0 ? _surfaceNormal : Vector2.up;
+		}
+	}
+
+	private bool segmentWithoutContact {
+		get {
+			return normalMemory < 1;
+		}
 	}
 
 	private void Movement() {
-		float d = inputSegment ? 0f : Input.GetAxisRaw ("Horizontal");
-		wantingToMove = Input.GetButton("Horizontal");
+		float d = inputSegment ? 0f : Input.GetAxisRaw ("Movement1");
+		wantingToMove = Input.GetButton("Movement1");
 
-			if (hugSurface) {
-				Vector2 v = new Vector2 (transform.position.x, transform.position.y);
-				if (wantingToMove) 
-					TestFlip(d);
-				// Try to detect a surface normal, otherwise up
-				RaycastHit2D hit = Physics2D.Raycast (transform.position, -playerNormal, rayMaxDistance, layerMask);
-				if (hit.collider != null) {
-					surfaceNormal = hit.normal;
-				} else {
-					surfaceNormal = Vector2.up;
-				}
-				
-				Debug.DrawLine (v, v + surfaceNormal, Color.green);
-				
-				playerNormal = Vector2.Lerp (playerNormal, surfaceNormal, smoothTurn * Time.deltaTime);
-				transform.up = playerNormal;
-				
-				if (wantingToMove) 
-					rigidbody2D.velocity = transform.right * Time.deltaTime * speed * d;
-				
+		if (wantingToMove && !walkingSound.isPlaying)
+			walkingSound.Play();
+		else if (!wantingToMove && walkingSound.isPlaying)
+			walkingSound.Stop();
+
+		if (Input.GetButtonDown("Flip1")) {
+			originalDirection = !originalDirection;
+			transform.localScale = originalDirection ? originalScale : reflectedScale;
+//			mySegment.cannon.transform.localScale = originalDirection ? originalScale : reflectedScale;
+//			mySegment.cannon.slimer.transform.localRotation = originalDirection ? slimeOriginalRotation : slimeReverseRotation;
+		}
+
+		if (hugSurface) {
+			Vector2 v = new Vector2 (transform.position.x, transform.position.y);
+
+
+			// Try to detect a surface normal
+
+			RaycastHit2D hit = Physics2D.Raycast (collider2D.bounds.center, -playerNormal, rayMaxDistance, layerMask);
+
+//			RaycastHit2D hit = Physics2D.CircleCast(transform.position, 1f, -playerNormal, rayMaxDistance, layerMask);
+			if (hit.collider != null) {
+				surfaceNormal = hit.normal;
+				Debug.DrawLine(hit.point, hit.point + hit.normal, Color.green);
+//				Debug.DrawLine(collider2D.bounds.center, collider2D.bounds.center - (Vector3) playerNormal, Color.red);
 			}
 
-		
+			if (segmentWithoutContact)
+				return;
+
+
+			
+			playerNormal = Vector2.Lerp (playerNormal, _surfaceNormal, smoothTurn);
+
+			if (mySegment.prevSegment && wantingToMove)
+				playerNormal = Vector2.Lerp(playerNormal, mySegment.prevSegment.movement.playerNormal, smoothTurn);
+
+			transform.up = playerNormal;
+			
+			if (wantingToMove) 
+				rigidbody2D.velocity = transform.right * Time.deltaTime * speed * d * (originalDirection ? 1f : -1f);
+			
+		}
+	
 	}
 
+	/*
 	void TestFlip(float d) {
-		if (Mathf.Sign(d) != Mathf.Sign(transform.localScale.x)) {
-			Vector3 s = transform.localScale;
-			s.x *= -1f;
-			transform.localScale = s;
+		if ((Mathf.Sign(d) < 0f) == originalDirection) {
+			originalDirection = !originalDirection;
 		}
-	}
+
+	}*/
 }

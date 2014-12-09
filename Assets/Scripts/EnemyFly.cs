@@ -31,7 +31,14 @@ public class EnemyFly : MonoBehaviour {
 
 	private bool _isAlive = true;
 
+	private LevelCoordinator levelCoordinator;
+
 	private ParticleSystem selfSlimer;
+	public AudioClip dyingSound;
+	public AudioClip thudSound;
+	public AudioClip splotSound;
+
+	private float soundX = 0f;
 
 	public bool isAlive {
 		get {
@@ -43,6 +50,7 @@ public class EnemyFly : MonoBehaviour {
 	// Use this for initialization
 	public void Start ()
 	{
+		levelCoordinator = GameObject.FindObjectOfType<LevelCoordinator>();
 		selfSlimer = gameObject.GetComponent<ParticleSystem>();
 		points = GameObject.FindGameObjectsWithTag("FlyTag").Select(e => e.transform).ToArray();
 		transform.position = points[Random.Range(0, points.Count() - 1)].position;
@@ -54,8 +62,11 @@ public class EnemyFly : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
-		if (!_isAlive)
+		if (!_isAlive || levelCoordinator.paused)
 			return;
+
+		soundX += Random.Range(0.1f, 0.3f);
+		audio.volume = Mathf.PerlinNoise(0f, soundX);
 
 		Debug.DrawLine(transform.position, new Vector3(pnt_x,pnt_y));
 
@@ -95,7 +106,13 @@ public class EnemyFly : MonoBehaviour {
 		rigidbody2D.AddTorque(Random.Range(-deadTorque, deadTorque));
 		rigidbody2D.gravityScale = deadDropGravity;
 		gameObject.layer = LayerMask.NameToLayer("Food");
-
+		audio.Stop();
+		audio.loop = false;
+		audio.PlayOneShot(dyingSound);
+		Animator anim = GetComponent<Animator>();
+		if (anim) {
+			anim.Play("Death");
+		}
 	}
 
 	public void Slime() {
@@ -113,9 +130,17 @@ public class EnemyFly : MonoBehaviour {
 
 
 			dist *= (dist * (flyTime / 20));
-			Debug.Log(dist);
+//			Debug.Log(dist);
 
 			yield return new WaitForSeconds(Random.Range(0.8f*dist, 2.0f+dist));
 		}
+	}
+
+	void OnCollisionEnter2D(Collision2D col) {
+		if (isAlive)
+			return;
+
+		audio.PlayOneShot(splotSound, 1f);
+		audio.PlayOneShot(thudSound, 1f);
 	}
 }

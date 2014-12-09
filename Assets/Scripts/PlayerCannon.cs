@@ -34,8 +34,9 @@ public class PlayerCannon : MonoBehaviour {
 	[HideInInspector]
 	private float _flipYVal = -1f;
 
-	private SquirtManager squirter;
 	private PlayerCoordinator playerCoord;
+	public ParticleSystem slimer;
+	public bool isDefaultDirection = true;
 
 	public bool flipY {
 		get {
@@ -44,7 +45,7 @@ public class PlayerCannon : MonoBehaviour {
 
 		set {
 			_flipY = value;
-			_flipYVal = _flipY ? -1f : 1f;
+			_flipYVal = _flipY ? 1f : -1f;
 		}
 	}
 
@@ -64,9 +65,6 @@ public class PlayerCannon : MonoBehaviour {
 	private bool _shooting = false;
 	private float perlinMean = 0.4652489f;
 	private float baseW;
-	private Squirt squirt;
-	public float squirtSpeed = 1f;
-	public float squirtDists = 1f;
 
 	[Range(0f, 10f)]
 	public float maxSlimingTime = 2f;
@@ -84,24 +82,27 @@ public class PlayerCannon : MonoBehaviour {
 
 	public float angle {
 		get {
-			return transform.localEulerAngles.z ;
+			if (isDefaultDirection)
+				return transform.localEulerAngles.z ;
+			else
+				return transform.localEulerAngles.z * -1f;
 		}
 		
 		set {
-//
-//			while (Mathf.Abs(value) > 360)
-//				value -= Mathf.Sign(value) * 360;
-//			
-			transform.localRotation = Quaternion.AngleAxis(WrapAngle(value), Vector3.forward);
-			
+			if (isDefaultDirection)
+				transform.localRotation = Quaternion.AngleAxis(WrapAngle(value), Vector3.forward);
+			else
+				transform.localRotation = Quaternion.AngleAxis(WrapAngle(value), Vector3.forward * -1f);
+
 		}
 	}
 
 	// Use this for initialization
 	void Start () {
-		squirter = gameObject.GetComponentInChildren<SquirtManager>();
+
 		playerCoord = gameObject.GetComponentInParent<PlayerCoordinator>();
-		baseW = angle;
+
+			baseW = angle;
 		_rndWobblingX = 100f * Random.value;
 	}
 	
@@ -115,39 +116,18 @@ public class PlayerCannon : MonoBehaviour {
 		} else if (_shooting) {
 			_rndWobblingY += shootingWobblingF * Time.deltaTime;
 			
-			angle = ClampRotation(angle + shootingWobbling * (Mathf.PerlinNoise(_rndWobblingX, _rndWobblingY) - perlinMean),
+			angle = ClampRotation(angle + shootingWobbling * (Mathf.PerlinNoise(_rndWobblingX, _rndWobblingY) - perlinMean) + Input.GetAxis("Aim1") * rotationSpeed * _flipYVal,
 			                      -flexAngle, flexAngle, baseW); 
 
 		} else if (still) {
 
-				angle = ClampRotation(angle + Input.GetAxis("Vertical") * rotationSpeed * _flipYVal, 
-				                      -flexAngle, flexAngle, baseW); 
+			angle = ClampRotation(angle + Input.GetAxis("Aim1") * rotationSpeed * _flipYVal, 
+			                      -flexAngle, flexAngle, baseW); 
 
-		} else {
+		} else if (!headMovement.wantingToMove) {
 
 					StartCoroutine(Energize());
 		}
-
-		/*
-
-		if (headRB.velocity.sqrMagnitude < stillSpeedSq && !headMovement.wantingToMove && (Time.timeSinceLevelLoad - lastSlime) >  ) {
-			if (still) {
-				float w = angle + Input.GetAxis("Vertical") * rotationSpeed * _flipYVal;
-				if (_shooting) {
-					_rndWobblingY += shootingWobblingF * Time.deltaTime;
-					w += shootingWobbling * (Mathf.PerlinNoise(_rndWobblingX, _rndWobblingY) - perlinMean);
-				}
-				angle = ClampRotation(w, -flexAngle, flexAngle, baseW); 
-//				angle = Mathf.Clamp(angle, baseW - flexAngle, baseW + flexAngle);
-	
-			} else {
-				if (!stillTransition)
-					StartCoroutine(Energize());
-			}
-		} else {
-			if (!stillTransition && still)
-				StartCoroutine(Deenergize());
-		}*/
 
 	}
 
@@ -180,31 +160,29 @@ public class PlayerCannon : MonoBehaviour {
 
 	void FixedUpdate() {
 //		Debug.Log(string.Format("{0} {1} {2}", still, Input.GetButton("Fire1"), slimeEmitter.isPaused));
-		if (still && Input.GetButton("Fire1") && !_shooting &&  (Time.timeSinceLevelLoad - lastSlime > slimeBetweenTime)) {
-//		    particleSystem.Play();
+		if (still && Input.GetButton("Fire1_1") && !_shooting &&  (Time.timeSinceLevelLoad - lastSlime > slimeBetweenTime)) {
+		    if (playerCoord.playerMovementActive.playerDirection == isDefaultDirection) {
+				audio.Play();
+				slimer.Play();
+			}
 			_shooting = true;
-			squirt = new Squirt();
-			squirter.AddSquirt(squirt);
-			AddSquirts();
-		} else if (_shooting && (Time.timeSinceLevelLoad - lastSlime < maxSlimingTime ) && Input.GetButton("Fire1")  ) {
-			AddSquirts();
+
+		} else if (_shooting && (Time.timeSinceLevelLoad - lastSlime < maxSlimingTime ) && Input.GetButton("Fire1_1")  ) {
+
 		
 		} else if (_shooting) {
-//			particleSystem.Stop();
+			slimer.Stop();
+			audio.Stop();
 			_shooting = false;
 			lastSlime = Time.timeSinceLevelLoad;
+//			if (playerCoord.playerMovementActive.playerDirection == isDefaultDirection) {
+//				slimer.transform.GetChild(0).transform.rotation = Quaternion.AngleAxis(0f, Vector3.forward);
+//			} else
+//				slimer.transform.GetChild(0).transform.rotation = Quaternion.AngleAxis(0f, Vector3.right);
+
 		}
 	}
-
-	void AddSquirts() {
-		Vector3 f = transform.right * Time.deltaTime * squirtDists;
-		Vector3 fs = transform.right * squirtSpeed;
-		squirt.AddParticle(new SquirtParticle(transform.position, fs , playerCoord.playerID));
-		squirt.AddParticle(new SquirtParticle(transform.position - 0.25f * f, fs, playerCoord.playerID));
-		squirt.AddParticle(new SquirtParticle(transform.position - 0.5f * f, fs, playerCoord.playerID));
-		squirt.AddParticle(new SquirtParticle(transform.position - 0.75f * f, fs, playerCoord.playerID));
-
-	}
+	
 
 	IEnumerator<WaitForSeconds> Energize() {
 		stillTransition = true;
